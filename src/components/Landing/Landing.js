@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from './Header/Header'
 import Banner from './Main-banner/Banner'
+import Products from './Products/Products'
 
 
 const Landing = () => {
@@ -8,6 +9,7 @@ const Landing = () => {
     <>
       <Header />
       <Banner />
+      <Products />
     </>
   )
 }
