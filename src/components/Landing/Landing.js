@@ -2,6 +2,10 @@ import React from 'react'
 import Header from './Header/Header'
 import Banner from './Main-banner/Banner'
 import Products from './Products/Products'
+import Articles from './Articles/Articles'
+import Benifits from './Benifits/Benifits'
+import Footer from './Footer/Footer'
+import Contact from './Contact/Contact'
 
 
 const Landing = () => {
@@ -9,7 +13,11 @@ const Landing = () => {
     <>
       <Header />
       <Banner />
+      <Benifits />
       <Products />
+      <Articles />
+      <Contact />
+      <Footer />
     </>
   )
 }
