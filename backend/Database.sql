@@ -4,18 +4,8 @@ CREATE TABLE customers (
     name VARCHAR(100),
     email VARCHAR(255),
     phone VARCHAR(20),
+    message TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- ADDRESSES (customer delivery locations)
-CREATE TABLE addresses (
-    id SERIAL PRIMARY KEY,
-    customer_id INT REFERENCES customers(id) ON DELETE CASCADE,
-    address_line TEXT NOT NULL,
-    city VARCHAR(100),
-    postal_code VARCHAR(20),
-    country VARCHAR(100),
-    is_primary BOOLEAN DEFAULT FALSE
 );
 
 -- PRODUCTS (base table)
@@ -75,7 +65,6 @@ CREATE TABLE inventory (
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
     customer_id INT REFERENCES customers(id) ON DELETE CASCADE,
-    address_id INT REFERENCES addresses(id),
     status VARCHAR(50) DEFAULT 'pending',             -- pending, shipped, delivered, etc.
     total_price NUMERIC(10,2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
