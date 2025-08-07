@@ -24,35 +24,18 @@ const Banner = () => {
         <>
 
             <section id='#home'>
-                <div className="flex flex-col items-center gap-[90px] text-center bg-[url('/assets/main-banner/mainbannerbg.png')] p-[140px]">
-                    <h1 className='text-[50px]'>Premium Aluminium Foil for Every Need</h1>
-                    <div className="relative w-[500px]">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            className="absolute left-[10px] top-1/2 transform -translate-y-1/2 text-gray-500"
-                        >
-                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
-                        </svg>
+                <div className="flex flex-col items-center gap-[90px] text-center bg-[url('/assets/main-banner/mainbannerbg.png')] bg-center p-[140px]">
+                    <h1 className='lg:text-[50px] sm:text-[35px] text-nowrap text-[20px] font-[550]'>Premium Aluminium Foil for Every Need</h1>
 
-                        <input
-                            type="text"
-                            placeholder="Enter your address for shipping options"
-                            className="w-full p-[15px] pl-[40px] bg-white rounded-[5px] text-black"
-                        />
-                    </div>
                 </div>
                 <div className="custom-container">
-                    <div className='flex justify-between items-center pt-[50px] pb-[50px] pr-[10px] pl-[10px] bg-[#FFF]'>
+                    <div className='flex flex-wrap  justify-center md:!justify-between gap-[60px]  pt-[50px] pb-[50px] lg:pr-[10px] lg:pl-[10px] bg-[#FFF]'>
                         {
                             bannerItems.map((item, index) => (
                         <div key={index} className="flex flex-col g-[10px] text-center items-center">
                             {item.icon}
-                            <p className='text-[16px] font-[600] !mt-[10px] '>{item.title}</p>
-                            <p className='text-[12px]'>{item.subtitle}</p>
+                            <p className='text-[16px] md:!text-[16px] font-[600] !mt-[10px] '>{item.title}</p>
+                            <p className='text-[12px] md:!text-[12px]'>{item.subtitle}</p>
                         </div>
                             ))
                         }

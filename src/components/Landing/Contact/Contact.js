@@ -4,8 +4,8 @@ const Contact = () => {
     return (
         <section id='#contact' className='bg-[#FBFBFB] py-[50px]' >
             <div className="custom-container">
-                <div className="flex flex-col items-start">
-                    <h2 className="text-[45px] font-bold">Contact Us</h2>
+                <div className="flex flex-col justify-center items-center w-full">
+                    <h2 className=" text-[35px] md:text-[45px] font-bold">Contact Us</h2>
                     <form action="submit">
                         <div className="input__parent w-[400px] !mt-[20px] pl-[20px] pr-[20px]">
                             <div className="!mb-[10px]">
