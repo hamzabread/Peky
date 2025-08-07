@@ -15,6 +15,15 @@ body {
   background: #fff;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-urbanist), sans-serif;
+}
+
+p {
+  font-family: var(--font-dm-sans), sans-serif;
+}
+
+
 /* div,
 ul,
 a,
