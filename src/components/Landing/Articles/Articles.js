@@ -9,7 +9,7 @@ const Articles = () => {
             <p className="text-[16px] text-[#666] !mb-[50px]">Expert's support it too!</p>
             <div className="flex items-center gap-[30px] w-[100%]">
                 {
-                    [1, 2, 3, 4].map((item) => (
+                    [1, 2, 3].map((item) => (
                         <div key={item} className="bg-white  rounded-[10px] shadow-sm w-[100%] cursor-pointer">
                             <a target="_blank" href="https://www.wnapt.com/knowledge-center/blogs/5-benefits-of-aluminum-vs-plastic-you-need-to-know">
                             <img src={`/assets/articles/articl${item}.jpg`} alt={`Article ${item}`} className="h-[230px] object-cover object-center" />
