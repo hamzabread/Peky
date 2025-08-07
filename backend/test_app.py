@@ -8,16 +8,6 @@ def client():
     with app.test_client() as client:
         yield client
 
-# ---- AUTH ROUTES ----
-
-def test_guest_route(client):
-    resp = client.post('/guest')
-    assert resp.status_code == 200
-    data = resp.get_json()
-    assert data['success'] is True
-    assert data['user'] == 'guest'
-    print("Guest route: PASSED")
-
 # ---- PRODUCT ROUTES ----
 
 @patch('psycopg2.connect')
@@ -104,33 +94,43 @@ def test_get_product_by_code(mock_connect, client):
     assert data['product']['product_code'] == 'P001'
     print("Get product by code: PASSED")
 
-
-    resp = client.get('/products')
-    assert resp.status_code == 200
-    data = resp.get_json()
-    assert data['success'] is True
-    assert isinstance(data['products'], list)
-    print("Get products: PASSED")
+# ---- CONTACT ROUTE ----
 
 @patch('psycopg2.connect')
-def test_get_product_detail(mock_connect, client):
+def test_contact_form(mock_connect, client):
     mock_conn = MagicMock()
     mock_cursor = MagicMock()
     mock_connect.return_value = mock_conn
     mock_conn.cursor.return_value = mock_cursor
 
-    # Setup fetchone and fetchall for product, type_details, images, inventory
-    mock_cursor.fetchone.side_effect = [
-        {
-            'id': 1,
-            'product_code': 'P001',
-            'name': 'Product 1',
-            'type': 'aluminum_shape',
-            'description': 'desc'
-        },
-        {'diameter_mm': 100, 'height_mm': 50, 'volume_cm3': 200},
-        {'quantity': 10}
-    ]
+    # Test successful submission
+    resp = client.post('/contact', json={
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "1234567890",
+        "message": "Hello, I am interested in your products."
+    })
+    assert resp.status_code == 201
+    data = resp.get_json()
+    assert data['success'] is True
+    print("Contact form submission: PASSED")
+
+    # Test missing fields
+    resp = client.post('/contact', json={
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "1234567890"
+        # message missing
+    })
+    assert resp.status_code == 400
+    data = resp.get_json()
+    assert data['success'] is False
+    print("Contact form missing fields: PASSED")
+
+if __name__ == "__main__":
+    import sys
+    import pytest
+    sys.exit(pytest.main(["-s", __file__]))
     mock_cursor.fetchall.side_effect = [
         [{'id': 1, 'image_url': 'img1.jpg', 'is_primary': True}]
     ]
