@@ -26,6 +26,8 @@ const Products = () => {
         getProducts();
     }, [])
 
+    let hamza = 0;
+    // iknkikknknkin
 
     // const products = [
     //     {
