@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 const Products = () => {
 
+    const [products, setProducts] = useState([]);
     const getProducts = async () => {
         try {
             const response = await fetch('http://localhost:5000/products', {
@@ -15,14 +16,14 @@ const Products = () => {
 
             const data = await response.json();
             console.log('Fetched products:', data); // Or do something else with the data
-            return data;
+            setProducts(data);
         } catch (error) {
             console.error('Failed to fetch products:', error);
         }
     };
 
     useEffect(() => {
-        const products = getProducts();
+        getProducts();
     }, [])
 
 
