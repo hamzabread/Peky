@@ -46,7 +46,7 @@ const Products = () => {
 
     return (
         <>
-            <section id="#products" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
+            <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
                 <div className="custom-container">
                     <h2 className="text-[35px] md:text-[45px] text-center !mb-[30px] font-bold">Our Products</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-[10px] md:gap-[60px]  !pt-[30px]">
