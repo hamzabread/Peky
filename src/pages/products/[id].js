@@ -1,3 +1,6 @@
+import Contact from '@/components/Landing/Contact/Contact';
+import Footer from '@/components/Landing/Footer/Footer';
+import Header from '@/components/Landing/Header/Header';
 import { useState } from 'react';
 
 export async function getServerSideProps(context) {
@@ -104,17 +107,7 @@ export default function ProductPage({ product, error }) {
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <div className="bg-gray-50 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <nav className="flex text-sm">
-            <a href="#" className="text-gray-500 hover:text-gray-700 transition-colors">Home</a>
-            <span className="mx-2 text-gray-400">/</span>
-            <a href="#" className="text-gray-500 hover:text-gray-700 transition-colors">Products</a>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-900 font-medium truncate">{product.title || product.name}</span>
-          </nav>
-        </div>
-      </div>
+      <Header />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
@@ -258,83 +251,11 @@ export default function ProductPage({ product, error }) {
               </div>
             )}
 
-            {/* Product Specifications */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-6 bg-gray-50 rounded-2xl">
-              {product.material && (
-                <div className="space-y-1">
-                  <span className="text-sm font-semibold text-black uppercase tracking-wide">Material</span>
-                  <p className="text-gray-600">{product.material}</p>
-                </div>
-              )}
-              {product.memory && (
-                <div className="space-y-1">
-                  <span className="text-sm font-semibold text-black uppercase tracking-wide">Memory</span>
-                  <p className="text-gray-600">{product.memory}</p>
-                </div>
-              )}
-              {product.product_code && (
-                <div className="space-y-1">
-                  <span className="text-sm font-semibold text-black uppercase tracking-wide">Product Code</span>
-                  <p className="text-gray-600">{product.product_code}</p>
-                </div>
-              )}
-              {product.type && (
-                <div className="space-y-1">
-                  <span className="text-sm font-semibold text-black uppercase tracking-wide">Type</span>
-                  <p className="text-gray-600">{product.type}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="space-y-4 pt-2">
-              <button className="w-full bg-black text-white py-4 px-8 rounded-xl font-semibold text-lg hover:bg-gray-800 transition-all duration-200 transform hover:scale-[0.98] active:scale-95 shadow-lg">
-                Add to Cart
-              </button>
-              <div className="grid grid-cols-2 gap-4">
-                <button className="border-2 border-gray-300 text-black py-3 px-6 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200">
-                  <div className="flex items-center justify-center space-x-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                    <span>Wishlist</span>
-                  </div>
-                </button>
-                <button className="border-2 border-gray-300 text-black py-3 px-6 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200">
-                  <div className="flex items-center justify-center space-x-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                    </svg>
-                    <span>Share</span>
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Shipping Info */}
-            <div className="border-t pt-8 space-y-4">
-              <div className="flex items-center space-x-3 text-gray-600">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                </svg>
-                <span>Free shipping on orders over $50</span>
-              </div>
-              <div className="flex items-center space-x-3 text-gray-600">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>30-day return guarantee</span>
-              </div>
-              <div className="flex items-center space-x-3 text-gray-600">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                <span>Secure payment processing</span>
-              </div>
             </div>
           </div>
         </div>
+        <Contact />
+        <Footer />
       </div>
-    </div>
   );
 }
