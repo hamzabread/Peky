@@ -9,7 +9,17 @@ export async function getServerSideProps() {
   };
 }
 
-export default function Products({ products }) {
+const Productss = [
+    {
+        id : 1,
+        image: "/assets/lmao",
+        title: "ur mom",
+        price: 999
+    }
+]
+
+
+export default function Products({  products  }) {
   return (
     <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
       <div className="custom-container">
@@ -17,7 +27,7 @@ export default function Products({ products }) {
           Our Products
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-[10px] md:gap-[60px] !pt-[30px]">
-          {products.map((product) => (
+          {Productss.map((product) => (
             <div
               key={product.id}
               className="bg-white pb-[20px] rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
