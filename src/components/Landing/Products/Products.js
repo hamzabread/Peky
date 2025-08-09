@@ -1,12 +1,23 @@
 import Link from "next/link";
 
+import { API_URL } from "@/lib/config";
 
-///
 
+export default async function Products() {
 
-export default async function Products( ) {
-  const res = await fetch("http://localhost:5000/products");
-  const products = await res.json();
+  let products = [];
+  try {
+    const res = await fetch(`${API_URL}/products`, { cache: "no-store" });
+
+    if (res.ok && res.headers.get("content-type")?.includes("application/json")) {
+      products = await res.json();
+    } else {
+      console.error("Unexpected response format from /products");
+    }
+  } catch (err) {
+    console.error("Failed to fetch products:", err);
+  }
+
   return (
     <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
       <div className="custom-container">
