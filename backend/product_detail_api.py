@@ -1,28 +1,17 @@
 import os
-import configparser
 from flask import Blueprint, jsonify
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
 product_detail_bp = Blueprint('product_detail', __name__)
 
-# Load DB config from ini file
-config = configparser.ConfigParser()
-config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-config.read(config_path)
-
-if 'postgres' not in config:
-    raise RuntimeError("Missing 'postgres' section in config.ini")
-
-db_config = config['postgres']
-
 def get_db_connection():
     conn = psycopg2.connect(
-        host=db_config.get('host'),
-        database=db_config.get('database'),
-        user=db_config.get('user'),
-        password=db_config.get('password'),
-        port=db_config.get('port', 5432),
+        host=os.environ.get('DB_HOST'),
+        database=os.environ.get('DB_NAME'),
+        user=os.environ.get('DB_USER'),
+        password=os.environ.get('DB_PASSWORD'),
+        port=os.environ.get('DB_PORT', 5432),
         sslmode='require'
     )
     return conn
@@ -101,6 +90,17 @@ def get_product_by_code(product_code):
         product_id_record = cursor.fetchone()
         cursor.close()
         conn.close()
+        if not product_id_record:
+            return jsonify({'success': False, 'message': f'Product with code {product_code} not found'}), 404
+        # Call the existing function with the ID
+        return get_product_detail(product_id_record['id'])
+    except Exception as e:
+        print(f"Error fetching product by code: {e}")
+        return jsonify({
+            'success': False,
+            'message': 'Failed to fetch product details',
+            'error': str(e)
+        }), 500
         if not product_id_record:
             return jsonify({'success': False, 'message': f'Product with code {product_code} not found'}), 404
         # Call the existing function with the ID
