@@ -1,18 +1,12 @@
 import Link from "next/link";
 
-export async function getServerSideProps() {
+
+///
+
+
+export default async function Products( ) {
   const res = await fetch("http://localhost:5000/products");
   const products = await res.json();
-
-  return {
-    props: { products }, // pass as prop to component
-  };
-}
-
-//
-
-
-export default function Products({  products  }) {
   return (
     <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
       <div className="custom-container">
