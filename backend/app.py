@@ -16,14 +16,8 @@ app.register_blueprint(product_detail_bp)
 app.register_blueprint(contact_bp)
 
 if __name__ == '__main__':
-    app.run(debug=True)
-config.read(config_path)
-print(f"Config sections found: {config.sections()}")
-
-# Register blueprints
-app.register_blueprint(product_bp)
-app.register_blueprint(product_detail_bp)
-app.register_blueprint(contact_bp)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(
+        debug=True,
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )
