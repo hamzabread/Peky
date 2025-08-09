@@ -7,7 +7,8 @@ export default async function Products() {
 
   let products = [];
   try {
-    const res = await fetch(`${API_URL}/products`, { cache: "no-store" });
+ const res = await fetch(new URL("products", API_URL), { cache: "no-store" });
+
 
     if (res.ok && res.headers.get("content-type")?.includes("application/json")) {
       products = await res.json();
