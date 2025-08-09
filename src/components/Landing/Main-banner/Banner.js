@@ -23,7 +23,7 @@ const Banner = () => {
 
         <>
 
-            <section id='#home'>
+            <section id='Home'>
                 <div className="flex flex-col items-center gap-[90px] pt-[225px] text-center bg-[url('/assets/main-banner/mainbannerbg.png')] bg-center p-[140px]">
                     <h1 className='lg:text-[50px] sm:text-[35px] text-nowrap text-[20px] font-[550]'>Premium Aluminium Foil for Every Need</h1>
 
