@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 const Products = () => {
+    const [products, setProducts] = useState([]);
 
-    // const [products, setProducts] = useState([]);
     const getProducts = async () => {
         try {
             const response = await fetch('http://localhost:5000/products', {
@@ -10,12 +10,12 @@ const Products = () => {
                 headers: { 'Content-Type': 'application/json' },
             });
 
-            // if (!response.ok) {
-            //     throw new Error(`HTTP error! status: ${response.status}`);
-            // }
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
             const data = await response.json();
-            console.log('Fetched products:', data); // Or do something else with the data
+            console.log('Fetched products:', data);
             setProducts(data);
         } catch (error) {
             console.error('Failed to fetch products:', error);
@@ -24,25 +24,7 @@ const Products = () => {
 
     useEffect(() => {
         getProducts();
-    }, [])
-
-    let hamza = 0;
-    // iknkikknknkin
-
-    const products = [
-        {
-            id: 1, image: "/assets/products/product1.jpeg", title: "Aluminium Foil F1", description: "Durable and versatile aluminium foil for all your cooking needs.", price: "$10.00"
-        },
-        {
-            id: 2, image: "/assets/products/product2.jpeg", title: "Aluminium Foil F2", description: "Perfect for cooking and baking, this aluminium foil is a kitchen essential.", price: "$12.00"
-        },
-        {
-            id: 3, image: "/assets/products/product3.jpg", title: "Aluminium Foil F3", description: "Ideal for storage and wrapping, keeping your food fresh.", price: "$15.00"
-        },
-        {
-            id: 4, image: "/assets/products/product4.jpg", title: "Aluminium Foil F4", description: "High-quality aluminium foil for all your culinary needs.", price: "$20.00"
-        }
-    ]
+    }, []);
 
     return (
         <>
