@@ -9,16 +9,16 @@ const Articles = () => {
       readTime: "5 min read",
       title: "WHY ALUMINIUM FOIL SHINES",
       description: "Learn how aluminium foil outperforms plastic in various applications.",
-      link: "https://www.wnapt.com/knowledge-center/blogs/5-benefits-of-aluminum-vs-plastic-you-need-to-know"
+      link: " https://www.foilonline.com/what-are-the-hidden-advantages-of-using-aluminum-foil-containers-for-food-storage/"
     },
     {
       id: 2,
-      image: "/assets/articles/articl2.jpg",
+      image: "/assets/articles/glasses.jpg",
       category: "Sustainability",
       readTime: "5 min read",
       title: "THE VERSATILITY OF FOIL",
       description: "Explore the many uses of aluminium foil in daily life.",
-      link: "https://www.wnapt.com/knowledge-center/blogs/5-benefits-of-aluminum-vs-plastic-you-need-to-know"
+      link: "https://www.rd.com/list/over-40-new-uses-for-aluminum-foil/"
     },
     {
       id: 3,
