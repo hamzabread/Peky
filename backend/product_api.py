@@ -1,30 +1,18 @@
 import os
-import configparser
 from flask import Blueprint, jsonify
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
 product_bp = Blueprint('product', __name__)
 
-# Load DB config from ini file
-config = configparser.ConfigParser()
-config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-config.read(config_path)
-
-# Check for postgres section
-if 'postgres' not in config:
-    raise RuntimeError("Missing 'postgres' section in config.ini")
-
-db_config = config['postgres']
-
 def get_db_connection():
-    """Create and return a database connection"""
+    """Create and return a database connection using environment variables"""
     conn = psycopg2.connect(
-        host=db_config.get('host'),
-        database=db_config.get('database'),
-        user=db_config.get('user'),
-        password=db_config.get('password'),
-        port=db_config.get('port', 5432),
+        host=os.environ.get('DB_HOST'),
+        database=os.environ.get('DB_NAME'),
+        user=os.environ.get('DB_USER'),
+        password=os.environ.get('DB_PASSWORD'),
+        port=os.environ.get('DB_PORT', 5432),
         sslmode='require'
     )
     return conn
@@ -38,6 +26,7 @@ def get_products():
     try:
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
+
         query = """
         SELECT 
             p.id, 
@@ -58,19 +47,24 @@ def get_products():
         """
         cursor.execute(query)
         db_products = cursor.fetchall()
+
         cursor.close()
         conn.close()
+
         # Transform DB products to match frontend expectations
-        products = []
-        for p in db_products:
-            products.append({
+        products = [
+            {
                 'id': p['id'],
                 'image': p.get('primary_image', ''),
                 'title': p.get('name', ''),
                 'description': p.get('description', ''),
-                'price': p.get('type', '')  # You may want to change this to actual price if available
-            })
+                'price': p.get('type', '')  # Replace with actual price if available
+            }
+            for p in db_products
+        ]
+
         return jsonify(products)
+
     except Exception as e:
         print(f"Error fetching products: {e}")
         return jsonify({
