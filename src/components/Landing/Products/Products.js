@@ -29,7 +29,7 @@ export default function Products({  products  }) {
           Our Products
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-[10px] md:gap-[60px] !pt-[30px]">
-          {products.map((product) => (
+          {Productss.map((product) => (
             <div
               key={product.id}
               className="bg-white pb-[20px] rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
