@@ -2,7 +2,7 @@ import React from 'react'
 
 const Contact = () => {
     return (
-        <section id='#contact' className='bg-[#FBFBFB] py-[50px]' >
+        <section id='Contact' className='bg-[#FBFBFB] py-[50px]' >
             <div className="custom-container">
                 <div className="flex flex-col justify-center items-center w-full">
                     <h2 className=" text-[35px] md:text-[45px] font-bold">Contact Us</h2>

@@ -32,12 +32,12 @@ const Articles = () => {
   ];
 
   return (
-    <section id="#articles" className="bg-[#FFF] py-[80px]">
+    <section id="Articles" className="bg-[#FFF] py-[80px]">
       <div className="custom-container  mx-auto ">
         <div className="text-center !mb-[60px]">
           <p className="text-[#666] text-sm font-medium mb-2 tracking-wide">BLOG</p>
           <h2 className="text-black text-[35px] md:!text-[45px] font-bold leading-tight mb-4">
-            EXPLORE ALUMINIUM FOIL
+            Explore Aluminium Foil
           </h2>
           <p className="text-gray-600 text-lg">
             Discover the benefits of aluminium foil

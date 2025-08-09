@@ -2,7 +2,7 @@ import React from 'react'
 
 const Benifits = () => {
   return (
-    <section id="benifits" className='bg-[#FFF] pt-[50px] py-[100px]  lg:py-[150px] relative '>
+    <section id="About" className='bg-[#FFF] pt-[50px] py-[100px]  lg:py-[150px] relative '>
         <div className="custom-container">
 
         <div className="flex justify-between items-center">
