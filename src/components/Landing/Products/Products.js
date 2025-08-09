@@ -18,6 +18,8 @@ export default async function Products() {
     console.error("Failed to fetch products:", err);
   }
 
+  //works
+
   return (
     <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
       <div className="custom-container">
