@@ -15,7 +15,7 @@ export default function Landing() {
       <Header />
       <Banner />
       <Benifits />
-      <Products />
+      {/* <Products /> */}
       <Articles />
       <Contact />
       <Footer />
