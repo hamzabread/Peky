@@ -1,12 +1,8 @@
 import Link from "next/link";
+import { API_URL } from "@/lib/config";
 
-// This will run on the server and read from Railway's environment variables
+// Server Component: fetch data directly
 export default async function Products() {
-  const API_URL =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:5000"
-      : process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
-
   let products = [];
 
   try {
