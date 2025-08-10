@@ -17,7 +17,7 @@ export async function getServerSideProps({ params }) {
 
   try {
     const res = await fetch(`${API_URL}/products/${id}`);
-
+    console.log(res);
 
     if (!res.ok) {
       error = `Product not found (status ${res.status})`;
