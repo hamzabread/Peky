@@ -1,20 +1,22 @@
 'use client';
 import React, { useState } from 'react';
+import { API_URL } from "@/lib/config";
 
 const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState({ loading: false, success: null, error: null });
 
   const sendData = async (e) => {
     e.preventDefault(); // prevent page reload
+    setStatus({ loading: true, success: null, error: null });
 
     const items = { name, email, phone, message };
 
     try {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_API_URL || "", // <-- Set your backend URL here or in env
+      const res = await fetch(`${API_URL}/contact`,
         {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
@@ -25,7 +27,7 @@ const Contact = () => {
       const result = await res.json();
 
       if (!res.ok) {
-        console.error("Fetch Failed: ", result.error);
+        setStatus({ loading: false, success: null, error: result.error || "Something went wrong" });
         return;
       }
 
@@ -34,9 +36,10 @@ const Contact = () => {
       setEmail("");
       setPhone("");
       setMessage("");
+      setStatus({ loading: false, success: "Message sent successfully!", error: null });
 
     } catch (error) {
-      console.error("Network or parsing error", error);
+      setStatus({ loading: false, success: null, error: "Network error. Please try again." });
     }
   };
 
@@ -122,12 +125,24 @@ const Contact = () => {
                 </div>
               </div>
 
+              {/* Status Message */}
+              {status.loading && (
+                <p className="text-blue-500 text-sm mt-3 text-center">Sending...</p>
+              )}
+              {status.success && (
+                <p className="text-green-500 text-sm mt-3 text-center">{status.success}</p>
+              )}
+              {status.error && (
+                <p className="text-red-500 text-sm mt-3 text-center">{status.error}</p>
+              )}
+
               {/* Submit */}
               <button
                 type="submit"
                 className='!ml-auto !mt-[10px] !mr-auto bg-[#FFF] text-black border-[1px] border-[#666] rounded-sm pt-[20px] pb-[20px] pl-[22px] pr-[22px]'
+                disabled={status.loading}
               >
-                Submit
+                {status.loading ? "Submitting..." : "Submit"}
               </button>
               
             </div>
