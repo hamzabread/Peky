@@ -53,8 +53,7 @@ const Contact = () => {
                   <textarea
                     name="message"
                     id="message"
-                    required
-                    defaultValue=""
+
                     className="peer w-full px-4 pt-6 pb-30 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none focus:outline-none"
                     placeholder=" "
                   >
