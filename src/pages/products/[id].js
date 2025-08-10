@@ -256,7 +256,7 @@ export default function ProductPage() {
             </div>
 
             {hasMultipleImages && (
-              <div className="flex space-x-3 mt-[10px] pl-[3px] overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex space-x-3 !pt-[5px] pl-[3px] overflow-x-auto pb-2 scrollbar-hide">
                 {images.map((image, index) => (
                   <button
                     key={index}
