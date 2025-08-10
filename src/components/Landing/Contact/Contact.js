@@ -1,46 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { API_URL } from "@/lib/config";
 
-const Contact = () => {
+export default function Contact  ()  {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState({ loading: false, success: null, error: null });
 
-  const sendData = async (e) => {
-    e.preventDefault(); // prevent page reload
-    setStatus({ loading: true, success: null, error: null });
-
-    const items = { name, email, phone, message };
-
-    try {
-      const res = await fetch(`${API_URL}/contact`,
-        {
-          method: "POST",
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(items),
+  useEffect(()=> {
+      const sendData = async (e) => {
+        e.preventDefault(); // prevent page reload
+        setStatus({ loading: true, success: null, error: null });
+    
+        const items = { name, email, phone, message };
+    
+        try {
+          const res = await fetch(`${API_URL}/contact`,
+            {
+              method: "POST",
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(items),
+            }
+          );
+    
+          const result = await res.json();
+    
+          if (!res.ok) {
+            setStatus({ loading: false, success: null, error: result.error || "Something went wrong" });
+            return;
+          }
+    
+          // Clear form if successful
+          setName("");
+          setEmail("");
+          setPhone("");
+          setMessage("");
+          setStatus({ loading: false, success: "Message sent successfully!", error: null });
+    
+        } catch (error) {
+          setStatus({ loading: false, success: null, error: "Network error. Please try again." });
         }
-      );
+      };
 
-      const result = await res.json();
+  }, [])
 
-      if (!res.ok) {
-        setStatus({ loading: false, success: null, error: result.error || "Something went wrong" });
-        return;
-      }
-
-      // Clear form if successful
-      setName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      setStatus({ loading: false, success: "Message sent successfully!", error: null });
-
-    } catch (error) {
-      setStatus({ loading: false, success: null, error: "Network error. Please try again." });
-    }
-  };
 
   return (
     <section id='Contact' className='bg-[#FBFBFB] py-[50px]'>
@@ -152,4 +156,3 @@ const Contact = () => {
   );
 };
 
-export default Contact;
