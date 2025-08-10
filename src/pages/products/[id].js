@@ -7,15 +7,12 @@ import { API_URL } from "../../lib/config";
 export async function getServerSideProps({ params }) {
   const { id } = params;
 
-  if (!id) {
-    return { notFound: true };
-  }
-
-  // Directly from Railway's environment variables
   const API_URL =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
       : process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
+
+  console.log("Fetching from:", `${API_URL}/products/${id}`);
 
   let product = null;
   let error = null;
@@ -24,32 +21,28 @@ export async function getServerSideProps({ params }) {
     const res = await fetch(`${API_URL}/products/${id}`);
 
     if (!res.ok) {
-      error = `Product not found (status ${res.status})`;
-    } else if (res.headers.get("content-type")?.includes("application/json")) {
+      error = `Backend returned ${res.status}`;
+    } else {
       const data = await res.json();
-
       if (data.success && data.product) {
         product = {
           ...data.product,
           ...data.type_details,
           images: data.images || [],
-          price: data.product.price || "",
-          description: data.product.description || "",
         };
       } else {
-        error = data.message || "Product not found.";
+        error = data.message || "Invalid data structure";
       }
-    } else {
-      error = "Invalid response format from server.";
     }
-  } catch (e) {
-    error = "Failed to fetch product data";
+  } catch (err) {
+    error = "Failed to connect to backend";
   }
 
   return {
     props: { product, error },
   };
 }
+
 
 
 export default function ProductPage({ product, error }) {
