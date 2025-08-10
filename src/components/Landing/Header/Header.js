@@ -36,6 +36,8 @@ const Header = (props) => {
             <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px]' />
           </Link>
           {/* Hamburger Icon */}
+          {
+            props.mainnav?
           <button onClick={() => setIsOpen(true)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 36 36">
               <path
@@ -43,7 +45,8 @@ const Header = (props) => {
                 fill="#FFF"
               />
             </svg>
-          </button>
+          </button> : ""
+}
         </nav>
       </header>
 
