@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Header from './Header/Header'
 import Banner from './Main-banner/Banner'
