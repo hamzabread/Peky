@@ -56,14 +56,14 @@ const Contact = () => {
 
                     className="peer w-full px-4 pt-6 pb-30 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none focus:outline-none"
                     placeholder=" "
-                  >
+                  />
                   <label
                     htmlFor="message"
                     className="absolute left-4 top-[30px] -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0"
                   >
                     Enter your message*
                   </label>
-                  </textarea>
+                  
                 </div>
               </div>
             </div>
