@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { API_URL } from "@/lib/config";
 
+// Server Component: fetch data directly
 export default async function Products() {
   let products = [];
 
   try {
     const res = await fetch(`${API_URL}/products`, {
-      cache: "no-store", // always fresh data
-      next: { revalidate: 0 }, // disable ISR
+      cache: "no-store",
+      next: { revalidate: 0 },
     });
 
     if (
