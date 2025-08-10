@@ -73,7 +73,7 @@ const Contact = () => {
               <div className="option-field !mb-[10px]">
                 <div className="relative w-full">
                   <input
-                    type="email"
+                    type="text"
                     name="email"
                     id="email"
                     required
