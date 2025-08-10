@@ -18,7 +18,7 @@ export async function getServerSideProps({ params }) {
   let error = null;
 
   try {
-    const res = await fetch(`${API_URL}/products/${id}`);
+    const res = await fetch(`${API_URL}/product/${id}`);
 
     if (!res.ok) {
       error = `Backend returned ${res.status}`;
