@@ -1,7 +1,6 @@
 import Contact from '@/components/Landing/Contact/Contact';
 import Footer from '@/components/Landing/Footer/Footer';
 import Header from '@/components/Landing/Header/Header';
-import { API_URL } from '@/lib/config';
 import { useState } from 'react';
 
 export async function getServerSideProps({ params }) {
@@ -16,7 +15,8 @@ export async function getServerSideProps({ params }) {
   let error = null;
 
   try {
-    const res = await fetch(`${API_URL}/${id}`);
+    const res = await fetch(`${API_URL}/products/${id}`);
+
 
     if (!res.ok) {
       error = `Product not found (status ${res.status})`;
