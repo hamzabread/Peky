@@ -2,6 +2,7 @@ import Contact from '@/components/Landing/Contact/Contact';
 import Footer from '@/components/Landing/Footer/Footer';
 import Header from '@/components/Landing/Header/Header';
 import { useState } from 'react';
+import { API_URL } from "../../lib/config";
 
 export async function getServerSideProps({ params }) {
   const { id } = params;
@@ -11,12 +12,12 @@ export async function getServerSideProps({ params }) {
     return { notFound: true };
   }
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
   let product = null;
   let error = null;
 
   try {
-    const res = await fetch(`${apiUrl}/products/${id}`);
+    const res = await fetch(`${API_URL}/products/${id}`);
+
 
     if (!res.ok) {
       error = `Product not found (status ${res.status})`;
