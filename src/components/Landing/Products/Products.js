@@ -1,22 +1,18 @@
 import Link from "next/link";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+
 export default async function Products() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-if (!baseUrl) {
-  throw new Error("NEXT_PUBLIC_API_URL is not set");
-}
-
-
   let products = [];
+
   try {
     const res = await fetch(`${baseUrl}/products`, { cache: "no-store" });
     if (res.ok && res.headers.get("content-type")?.includes("application/json")) {
       products = await res.json();
-    } else {
-      console.error("Unexpected response format from /products");
     }
   } catch (err) {
     console.error("Failed to fetch products:", err);
+    // Optionally keep products = [] instead of crashing
   }
 
   return (
