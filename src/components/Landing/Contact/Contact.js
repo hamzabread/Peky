@@ -92,7 +92,7 @@ const Contact = () => {
               <div className="option-field !mb-[10px]">
                 <div className="relative w-full">
                   <input
-                    type="tel"
+                    type="number"
                     name="phone"
                     id="phone"
                     value={phone}
