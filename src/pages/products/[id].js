@@ -7,21 +7,25 @@ import { API_URL } from "../../lib/config";
 export async function getServerSideProps({ params }) {
   const { id } = params;
 
-  // If no ID is provided, show 404 page
   if (!id) {
     return { notFound: true };
   }
+
+  // Directly from Railway's environment variables
+  const API_URL =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
 
   let product = null;
   let error = null;
 
   try {
     const res = await fetch(`${API_URL}/products/${id}`);
-    console.log(res);
 
     if (!res.ok) {
       error = `Product not found (status ${res.status})`;
-    } else if (res.headers.get('content-type')?.includes('application/json')) {
+    } else if (res.headers.get("content-type")?.includes("application/json")) {
       const data = await res.json();
 
       if (data.success && data.product) {
@@ -29,23 +33,24 @@ export async function getServerSideProps({ params }) {
           ...data.product,
           ...data.type_details,
           images: data.images || [],
-          price: data.product.price || '',
-          description: data.product.description || '',
+          price: data.product.price || "",
+          description: data.product.description || "",
         };
       } else {
-        error = data.message || 'Product not found.';
+        error = data.message || "Product not found.";
       }
     } else {
-      error = 'Invalid response format from server.';
+      error = "Invalid response format from server.";
     }
   } catch (e) {
-    error = 'Failed to fetch product data';
+    error = "Failed to fetch product data";
   }
 
   return {
     props: { product, error },
   };
 }
+
 
 export default function ProductPage({ product, error }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
