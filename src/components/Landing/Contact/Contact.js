@@ -97,7 +97,7 @@ const Contact = () => {
                     id="phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    className="peer w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
                     placeholder=" "
                   />
                   <label htmlFor="phone" className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0">
@@ -138,7 +138,7 @@ const Contact = () => {
               {/* Submit */}
               <button
                 type="submit"
-                className='!ml-auto !mt-[10px] !mr-auto bg-[#FFF] text-black border-[1px] border-[#666] rounded-sm pt-[20px] pb-[20px] pl-[22px] pr-[22px]'
+                className='!ml-auto !mt-[10px] w-full !mr-auto bg-[#FFF] text-black border-[1px] border-[#666] rounded-sm pt-[10px] pb-[10px] pl-[22px] pr-[22px]'
                 disabled={status.loading}
               >
                 {status.loading ? "Submitting..." : "Submit"}
