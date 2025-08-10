@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import { API_URL } from "@/lib/config";
 
 const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState(null);
 
   const sendData = async (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault(); // prevent page reload
 
-    const items = { name, email, message };
-    setStatus("loading");
+    const items = { name, email, phone, message };
 
     try {
       const res = await fetch(
-        `${API_URL}/products`, // <-- Replace with your endpoint
+        process.env.NEXT_PUBLIC_API_URL || "", // <-- Set your backend URL here or in env
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(items),
         }
       );
@@ -26,80 +24,111 @@ const Contact = () => {
       const result = await res.json();
 
       if (!res.ok) {
-        console.error("Fetch Failed:", result.error);
-        setStatus("error");
+        console.error("Fetch Failed: ", result.error);
         return;
       }
 
-      setStatus("success");
+      // Clear form if successful
       setName("");
       setEmail("");
+      setPhone("");
       setMessage("");
 
     } catch (error) {
       console.error("Network or parsing error", error);
-      setStatus("error");
     }
   };
 
   return (
-    <section id="Contact" className="bg-[#FBFBFB] py-[50px]">
+    <section id='Contact' className='bg-[#FBFBFB] py-[50px]'>
       <div className="custom-container">
         <div className="flex flex-col justify-center items-center w-full">
           <h2 className="text-[35px] md:text-[45px] font-bold">Contact Us</h2>
-
           <form onSubmit={sendData}>
             <div className="input__parent w-[400px] !mt-[20px] pl-[20px] pr-[20px]">
-              
+
               {/* Name */}
               <div className="!mb-[10px]">
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] rounded-[10px] outline-none border-none"
-                  placeholder="Enter your name*"
-                />
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)} 
+                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    placeholder=" "
+                  />
+                  <label htmlFor="name" className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0">
+                    Enter your name*
+                  </label>
+                </div>
               </div>
 
               {/* Email */}
-              <div>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] rounded-[10px] outline-none border-none"
-                  placeholder="Enter your email*"
-                />
+              <div className="option-field !mb-[10px]">
+                <div className="relative w-full">
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} 
+                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    placeholder=" "
+                  />
+                  <label htmlFor="email" className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0">
+                    Enter your email*
+                  </label>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="option-field !mb-[10px]">
+                <div className="relative w-full">
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    placeholder=" "
+                  />
+                  <label htmlFor="phone" className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0">
+                    Enter your phone (optional)
+                  </label>
+                </div>
               </div>
 
               {/* Message */}
-              <div className="!mt-[10px]">
-                <textarea
-                  required
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="peer w-full px-4 pt-6 pb-2 h-[120px] bg-[#f3f3f3] rounded-[10px] outline-none border-none"
-                  placeholder="Enter your message*"
-                />
+              <div className="option-field !mt-[10px]">
+                <div className="relative w-full">
+                  <textarea
+                    name="message"
+                    id="message"
+                    required
+                    value={message}
+                    className="peer w-full px-4 pt-6 pb-2 h-[120px] bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    onChange={(e) => setMessage(e.target.value)} 
+                    placeholder=" "
+                  ></textarea>
+                  <label htmlFor="message" className="absolute left-4 top-[20px] -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0">
+                    Enter your message*
+                  </label>
+                </div>
               </div>
 
+              {/* Submit */}
               <button
                 type="submit"
-                disabled={status === "loading"}
-                className="mt-[10px] bg-[#FFF] border border-[#666] rounded-sm py-[12px] px-[22px]"
+                className='!ml-auto !mt-[10px] !mr-auto bg-[#FFF] text-black border-[1px] border-[#666] rounded-sm pt-[20px] pb-[20px] pl-[22px] pr-[22px]'
               >
-                {status === "loading" ? "Sending..." : "Submit"}
+                Submit
               </button>
-
-              {status === "success" && (
-                <p className="text-green-600 mt-2">Message sent successfully!</p>
-              )}
-              {status === "error" && (
-                <p className="text-red-600 mt-2">Something went wrong. Please try again.</p>
-              )}
+              
             </div>
           </form>
         </div>
