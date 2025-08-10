@@ -8,7 +8,7 @@ import Footer from './Footer/Footer'
 import Contact from './Contact/Contact'
 
 
-const Landing = () => {
+export default function Landing() {
   return (
     <>
       <Header />
@@ -21,5 +21,3 @@ const Landing = () => {
     </>
   )
 }
-
-export default Landing
