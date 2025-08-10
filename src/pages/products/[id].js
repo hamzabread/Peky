@@ -256,7 +256,7 @@ export default function ProductPage() {
             </div>
 
             {hasMultipleImages && (
-              <div className="flex space-x-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex space-x-3 justify-center overflow-x-auto pb-2 scrollbar-hide">
                 {images.map((image, index) => (
                   <button
                     key={index}
@@ -264,7 +264,7 @@ export default function ProductPage() {
                       setCurrentImageIndex(index);
                       setIsImageLoading(true);
                     }}
-                    className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                    className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200 ${
                       index === currentImageIndex ? 'shadow-lg scale-105' : ' hover:shadow-md'
                     }`}
                   >
