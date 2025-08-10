@@ -139,7 +139,7 @@ const Contact = () => {
               {/* Submit */}
               <button
                 type="submit"
-                className='!ml-auto !mt-[10px] !mr-auto bg-[#FFF] text-black border-[1px] border-[#666] rounded-sm pt-[20px] pb-[20px] pl-[22px] pr-[22px]'
+                className='!ml-auto w-full !mt-[10px] !mr-auto bg-[#FFF] text-black border-[1px] border-[#666] rounded-sm pt-[20px] pb-[20px] pl-[22px] pr-[22px]'
                 disabled={status.loading}
               >
                 {status.loading ? "Submitting..." : "Submit"}

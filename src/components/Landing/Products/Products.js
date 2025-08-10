@@ -49,14 +49,14 @@ export default function Products() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-white pb-[20px] rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
+                className="bg-white pb-[20px] group rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
               >
                 <Link href={`/products/${product.id}`}>
                   <div className="relative overflow-hidden">
                     <img
                       src={product.image}
                       alt={product.title}
-                      className="w-full h-[200px] md:!h-[300px] object-cover transition-transform duration-300 hover:scale-105"
+                      className="w-full h-[200px] md:!h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                   <h3 className="text-[18px] pr-[15px] pl-[15px] sm:!text-[20px] font-bold !mt-[15px]">
