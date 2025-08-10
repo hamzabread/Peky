@@ -15,12 +15,19 @@ export default function ProductPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  // Product-specific ratings data
+  // Product-specific ratings and details data
   const productRatings = {
     1: { rating: 4.8, reviews: 124 },
     2: { rating: 4.6, reviews: 89 },
     3: { rating: 4.9, reviews: 203 },
     4: { rating: 4.7, reviews: 156 }
+  };
+
+  const productDetails = {
+    1: { density: "Light", material: "Premium Aluminum", dimensions: "Small", capacity: "250ml" },
+    2: { density: "Medium", material: "Food Grade Aluminum", dimensions: "Medium", capacity: "500ml" },
+    3: { density: "Heavy", material: "Industrial Aluminum", dimensions: "Large", capacity: "750ml" },
+    4: { density: "Extra Heavy", material: "Commercial Grade", dimensions: "Family", capacity: "1000ml" }
   };
 
   useEffect(() => {
@@ -89,8 +96,14 @@ export default function ProductPage() {
   const hasMultipleImages = images.length > 1;
   const currentImage = images[currentImageIndex];
 
-  // Get rating data for current product
+  // Get rating and details data for current product
   const ratingData = productRatings[parseInt(id)] || { rating: 4.5, reviews: 100 };
+  const detailsData = productDetails[parseInt(id)] || { 
+    density: "Medium", 
+    material: "Standard Aluminum", 
+    dimensions: "Standard", 
+    capacity: "500ml" 
+  };
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
@@ -152,6 +165,39 @@ export default function ProductPage() {
 
     return stars;
   };
+
+  const DensityIcon = () => (
+    <svg className="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+      <circle cx="9" cy="9" r="2"/>
+      <path d="M21 15l-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+      <circle cx="15" cy="9" r="2"/>
+    </svg>
+  );
+
+  const MaterialIcon = () => (
+    <svg className="w-6 h-6 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    </svg>
+  );
+
+  const DimensionsIcon = () => (
+    <svg className="w-6 h-6 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+      <line x1="8" y1="21" x2="16" y2="21"/>
+      <line x1="12" y1="17" x2="12" y2="21"/>
+    </svg>
+  );
+
+  const CapacityIcon = () => (
+    <svg className="w-6 h-6 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14,2 14,8 20,8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+      <polyline points="10,9 9,9 8,9"/>
+    </svg>
+  );
 
   return (
     <div className="min-h-screen  bg-white">
@@ -261,6 +307,79 @@ export default function ProductPage() {
                 </div>
               </div>
             )}
+
+            {/* Product Specifications */}
+            <div className="space-y-6">
+              <h2 className="text-xl font-semibold text-black">Product Specifications</h2>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                  <div className="flex items-center gap-3 mb-3">
+                    <MaterialIcon />
+                    <h3 className="font-semibold text-gray-800">Material</h3>
+                  </div>
+                  <p className="text-gray-600 text-lg">{detailsData.material}</p>
+                </div>
+
+                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                  <div className="flex items-center gap-3 mb-3">
+                    <DensityIcon />
+                    <h3 className="font-semibold text-gray-800">Density</h3>
+                  </div>
+                  <p className="text-gray-600 text-lg">{detailsData.density}</p>
+                </div>
+
+                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                  <div className="flex items-center gap-3 mb-3">
+                    <DimensionsIcon />
+                    <h3 className="font-semibold text-gray-800">Size</h3>
+                  </div>
+                  <p className="text-gray-600 text-lg">{detailsData.dimensions}</p>
+                </div>
+
+                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                  <div className="flex items-center gap-3 mb-3">
+                    <CapacityIcon />
+                    <h3 className="font-semibold text-gray-800">Capacity</h3>
+                  </div>
+                  <p className="text-gray-600 text-lg">{detailsData.capacity}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Key Features */}
+            <div className="space-y-6">
+              <h2 className="text-xl font-semibold text-black">Key Features</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border border-green-100">
+                  <svg className="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-green-800 font-medium">Food Safe</span>
+                </div>
+                
+                <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                  <svg className="w-6 h-6 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span className="text-blue-800 font-medium">Heat Resistant</span>
+                </div>
+                
+                <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg border border-purple-100">
+                  <svg className="w-6 h-6 text-purple-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                  <span className="text-purple-800 font-medium">Eco-Friendly</span>
+                </div>
+                
+                <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-lg border border-orange-100">
+                  <svg className="w-6 h-6 text-orange-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <span className="text-orange-800 font-medium">Recyclable</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
