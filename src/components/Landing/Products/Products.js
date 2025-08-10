@@ -1,7 +1,11 @@
 import Link from "next/link";
 
 export default async function Products() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+if (!baseUrl) {
+  throw new Error("NEXT_PUBLIC_API_URL is not set");
+}
+
 
   let products = [];
   try {
