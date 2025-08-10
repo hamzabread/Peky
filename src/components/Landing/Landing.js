@@ -12,7 +12,7 @@ import Contact from './Contact/Contact'
 export default function Landing() {
   return (
     <>
-      <Header />
+      <Header mainnav = {true} />
       <Banner />
       <Benifits />
       <Products />

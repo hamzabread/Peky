@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 
-const Header = () => {
+const Header = (props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const menuItems = ['Home', 'About', 'Buy', 'Articles', 'Contact']
@@ -15,7 +15,8 @@ const Header = () => {
           <Link href='/'>
             <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px]' />
           </Link>
-
+        {
+          props.mainnav?
           <div className='flex items-center gap-[50px]'>
             <ul className="flex gap-12">
               {menuItems.map((item) => (
@@ -25,7 +26,8 @@ const Header = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> : ""
+      }
         </nav>
 
         {/* Mobile Nav */}
