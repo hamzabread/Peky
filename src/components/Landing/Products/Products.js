@@ -1,27 +1,33 @@
+'use client';
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { API_URL } from "@/lib/config";
 
-// Server Component: fetch data directly
-export default async function Products() {
-  let products = [];
+export default function Products() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  try {
-    const res = await fetch(`${API_URL}/products`, {
-      cache: "no-store",
-      next: { revalidate: 0 },
-    });
-
-    if (
-      res.ok &&
-      res.headers.get("content-type")?.includes("application/json")
-    ) {
-      products = await res.json();
-    } else {
-      console.warn("Unexpected response from /products:", res.status);
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch(`${API_URL}/products`);
+        if (
+          res.ok &&
+          res.headers.get("content-type")?.includes("application/json")
+        ) {
+          const data = await res.json();
+          setProducts(data);
+        } else {
+          console.warn("Unexpected response from /products:", res.status);
+        }
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+      } finally {
+        setLoading(false);
+      }
     }
-  } catch (err) {
-    console.error("Failed to fetch products:", err);
-  }
+    fetchProducts();
+  }, []);
 
   return (
     <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
@@ -30,9 +36,13 @@ export default async function Products() {
           Our Products
         </h2>
 
-        {products.length === 0 ? (
+        {loading ? (
           <p className="text-center text-gray-500">
-            Products are loading or unavailable. Please check back soon.
+            Products are loading. Please check back soon.
+          </p>
+        ) : products.length === 0 ? (
+          <p className="text-center text-gray-500">
+            Products are unavailable. Please check back soon.
           </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-[10px] md:gap-[60px] !pt-[30px]">

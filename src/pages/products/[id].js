@@ -1,53 +1,45 @@
+'use client'
 import Contact from '@/components/Landing/Contact/Contact';
 import Footer from '@/components/Landing/Footer/Footer';
 import Header from '@/components/Landing/Header/Header';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { API_URL } from "../../lib/config";
 
-export async function getServerSideProps({ params }) {
-  const { id } = params;
+export default function ProductPage() {
+  const router = useRouter();
+  const { id } = router.query;
 
-  const API_URL =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:5000"
-      : process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL;
-
-  console.log("Fetching from:", `${API_URL}/products/${id}`);
-
-  let product = null;
-  let error = null;
-
-  try {
-    const res = await fetch(`${API_URL}/product/${id}`);
-
-    if (!res.ok) {
-      error = `Backend returned ${res.status}`;
-    } else {
-      const data = await res.json();
-      if (data.success && data.product) {
-        product = {
-          ...data.product,
-          ...data.type_details,
-          images: data.images || [],
-        };
-      } else {
-        error = data.message || "Invalid data structure";
-      }
-    }
-  } catch (err) {
-    error = "Failed to connect to backend";
-  }
-
-  return {
-    props: { product, error },
-  };
-}
-
-
-
-export default function ProductPage({ product, error }) {
+  const [product, setProduct] = useState(null);
+  const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isImageLoading, setIsImageLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) return;
+    async function fetchProduct() {
+      try {
+        const res = await fetch(`${API_URL}/product/${id}`);
+        if (!res.ok) {
+          setError(`Backend returned ${res.status}`);
+          return;
+        }
+        const data = await res.json();
+        if (data.success && data.product) {
+          setProduct({
+            ...data.product,
+            ...data.type_details,
+            images: data.images || [],
+          });
+        } else {
+          setError(data.message || "Invalid data structure");
+        }
+      } catch (err) {
+        setError("Failed to connect to backend");
+      }
+    }
+    fetchProduct();
+  }, [id]);
 
   // Error UI
   if (error) {
@@ -232,3 +224,4 @@ export default function ProductPage({ product, error }) {
     </div>
   );
 }
+

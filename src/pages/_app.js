@@ -1,3 +1,4 @@
+'use client';
 import "@/styles/app.css";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
