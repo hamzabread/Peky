@@ -265,7 +265,7 @@ export default function ProductPage() {
                       setIsImageLoading(true);
                     }}
                     className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
-                      index === currentImageIndex ? 'border-black shadow-lg scale-105' : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+                      index === currentImageIndex ? 'shadow-lg scale-105' : ' hover:shadow-md'
                     }`}
                   >
                     <img src={image.image_url} alt={`${product.title || product.name} ${index + 1}`} className="w-full h-full object-cover" />
@@ -310,9 +310,9 @@ export default function ProductPage() {
 
             {/* Product Specifications */}
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-black">Product Specifications</h2>
+              <h2 className="text-xl !mb-[5px] font-semibold text-black">Product Specifications</h2>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
                   <div className="flex items-center gap-3 mb-3">
                     <MaterialIcon />
@@ -348,8 +348,8 @@ export default function ProductPage() {
             </div>
 
             {/* Key Features */}
-            <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-black">Key Features</h2>
+            <div className="space-y-6 ">
+              <h2 className="text-xl !mb-[5px] font-semibold text-black">Key Features</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border border-green-100">
                   <svg className="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
