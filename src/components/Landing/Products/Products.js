@@ -33,7 +33,7 @@ export default function Products() {
     <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
       <div className="custom-container">
         <h2 className="text-[35px] md:text-[45px] text-center !mb-[30px] font-bold">
-          Our Products
+          Our <span className="pl-[5px] text-green-700">Products</span> 
         </h2>
 
         {loading ? (

@@ -37,7 +37,7 @@ const Articles = () => {
         <div className="text-center !mb-[60px]">
           <p className="text-[#666] text-sm font-medium mb-2 tracking-wide">BLOG</p>
           <h2 className="text-black text-[35px] md:!text-[45px] font-bold leading-tight mb-4">
-            Explore Aluminium Foil
+            <span className="text-green-700 pr-[10px]">Explore</span>Aluminium Foil
           </h2>
           <p className="text-gray-600 text-lg">
             Discover the benefits of aluminium foil

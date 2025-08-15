@@ -47,7 +47,7 @@ const Contact = () => {
     <section id='Contact' className='bg-[#FBFBFB] py-[50px]'>
       <div className="custom-container">
         <div className="flex flex-col justify-center items-center w-full">
-          <h2 className="text-[35px] md:text-[45px] font-bold">Contact Us</h2>
+          <h2 className="text-[35px] md:text-[45px] font-bold"><span className='text-green-700 pr-[10px]'>Contact</span>Us</h2>
           <form onSubmit={sendData}>
             <div className="input__parent w-[400px] !mt-[20px] pl-[20px] pr-[20px]">
 
