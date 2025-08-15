@@ -23,13 +23,12 @@ const Banner = () => {
 
         <>
 
-            <section id='Home'>
+            <section id='Home' className='bg-[#FBFBFB]'>
                 <div className="flex flex-col items-center gap-[90px] pt-[225px] text-center bg-[url('/assets/main-banner/mainbannerbg.png')] bg-center p-[140px]">
-                    <h1 className='lg:text-[50px] sm:text-[35px] text-nowrap text-[20px] font-[550]'>Premium Aluminium Foil for Every Need</h1>
-
+                    <h1 className='lg:text-[60px] sm:text-[45px] text-nowrap text-[40px] font-[550] text-green-700'> Peky <span className='block text-[15px] sm:text-[20px] text-[#000] lg:text-[30px] '>Healthier Choice</span></h1>
                 </div>
                 <div className="custom-container">
-                    <div className='flex flex-wrap  justify-center md:!justify-between gap-[60px]  pt-[50px] pb-[50px] lg:pr-[10px] lg:pl-[10px] bg-[#FFF]'>
+                    <div className='flex flex-wrap  justify-center md:!justify-between gap-[60px]  pt-[50px] pb-[50px] lg:pr-[10px] lg:pl-[10px] bg-[#FBFBFB]'>
                         {
                             bannerItems.map((item, index) => (
                         <div key={index} className="flex flex-col g-[10px] text-center items-center">

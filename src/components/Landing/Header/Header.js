@@ -15,19 +15,25 @@ const Header = (props) => {
           <Link href='/'>
             <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px]' />
           </Link>
-        {
+        
+          <div className='flex items-center gap-[40px]'>
+            {
           props.mainnav?
-          <div className='flex items-center gap-[50px]'>
-            <ul className="flex gap-12">
+            <ul className="flex gap-10">
               {menuItems.map((item) => (
                 <li key={item} className="group relative text-white cursor-pointer">
                   <a href={`#${item}`} className="relative">{item}</a>
                   <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
                 </li>
               ))}
-            </ul>
-          </div> : ""
-      }
+            </ul> : ""
+        }
+            <Link href='/login' className='cursor-pointer'>
+            <button className="bg-white rounded-sm pr-[20px] pl-[20px] pt-[8px] pb-[8px] text-black">Login</button>
+
+            </Link>
+          </div> 
+      
         </nav>
 
         {/* Mobile Nav */}
