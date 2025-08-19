@@ -26,7 +26,7 @@ const Footer = () => {
         <div className="w-full lg:w-[500px] h-[300px]">
           <iframe
             title="Peky Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6807.401612569258!2d74.142349!3d31.255882!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3918fd7b3c1b7b77%3A0xa6b60cba9b7f3c86!2s64C%20Small%20Industrial%20Estate%2C%20Sundar%20Road%2C%20Raiwind%2055150%2C%20Lahore!5e0!3m2!1sen!2s!4v1698413123456!5m2!1sen!2s"
+src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13694.30791531838!2d74.151465!3d31.3168622!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391855b351f06949%3A0x4d3a96c03254b37a!2sSunder%20Small%20Industrial%20Estate%20II!5e0!3m2!1sen!2s!4v1698413123456!5m2!1sen!2s"
             width="100%"
             height="100%"
             style={{ border: 0 }}
