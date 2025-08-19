@@ -71,7 +71,7 @@ const index = () => {
     setError("");
 
     try {
-      const response = await fetch(`${API_URL}/signup`, {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -93,7 +93,8 @@ const index = () => {
       sessionStorage.setItem("pendingUsername", formData.username);
       
       // Redirect to verification page
-      router.push("/verify");
+      router.push(`/verify?username=${encodeURIComponent(formData.username)}&email=${encodeURIComponent(formData.email)}`);
+
 
     } catch (error) {
       console.error("Network or parsing error:", error);
