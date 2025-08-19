@@ -284,7 +284,7 @@ const formatPrice = (price) => {
           </div>
 
           {/* Product Details */}
-          <div className="mt-8 lg:!mt-0 space-y-8">
+          <div className="!mt-8 lg:!mt-0 space-y-8">
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black leading-tight mb-4">
                 {product.title || product.name}
@@ -294,7 +294,7 @@ const formatPrice = (price) => {
   <div className="flex flex-col space-y-4 !mb-6">
     {/* ✅ Total for selected quantity */}
     <div className="flex items-baseline space-x-4">
-      <span className="text-3xl sm:text-4xl font-bold text-black">
+      <span className="text-3xl sm:text-4xl pb-[10px] font-bold text-black">
         {formatPrice(priceForQty(product.price, quantity))}
       </span>
       {product.original_price && product.original_price !== product.price && (

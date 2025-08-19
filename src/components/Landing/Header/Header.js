@@ -96,7 +96,7 @@ const Header = (props) => {
             )}
 
             {/* Cart Icon */}
-            <div className="relative">
+            <div className="relative hidden">
               <button onClick={() => setIsCartOpen(true)} className="relative">
                 {/* <svg
                   height="30"
@@ -122,7 +122,9 @@ const Header = (props) => {
             </div>
 
             {/* Login/Logout */}
-            {!isLoggedIn ? (
+ 
+          </div>
+                     {!isLoggedIn ? (
               <Link href='/login' className='cursor-pointer'>
                 <button className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors">Login</button>
               </Link>
@@ -134,7 +136,6 @@ const Header = (props) => {
                 Logout
               </button>
             )}
-          </div>
         </nav>
 
         {/* Mobile Nav */}

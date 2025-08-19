@@ -93,7 +93,7 @@ export default function Products() {
                     {product.title}
                   </h3>
                   <p className="text-[14px] pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px]">
-                    Rs. {product.price} / 10
+                    Rs. {product.price} / 10 Pieces
                   </p>
                   <svg
                     className="absolute bottom-[30px] right-[10px] cursor-pointer"
