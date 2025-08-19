@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.11",
     "emailjs-com": "^3.2.0",
+    "gsap": "^3.13.0",
     "lodash": "^4.17.21",
     "next": "^15.4.6",
     "postcss": "^8.5.6",

@@ -1,45 +1,53 @@
-import React from "react";
+"use client";
+import React, { useEffect, useRef } from "react";
 
 const Articles = () => {
-  const articles = [
-    {
-      id: 1,
-      image: "/assets/articles/articl1.jpg",
-      category: "Aluminium",
-      readTime: "5 min read",
-      title: "WHY ALUMINIUM FOIL SHINES",
-      description: "Learn how aluminium foil outperforms plastic in various applications.",
-      link: " https://www.foilonline.com/what-are-the-hidden-advantages-of-using-aluminum-foil-containers-for-food-storage/"
-    },
-    {
-      id: 2,
-      image: "/assets/articles/glasses.jpg",
-      category: "Sustainability",
-      readTime: "5 min read",
-      title: "THE VERSATILITY OF FOIL",
-      description: "Explore the many uses of aluminium foil in daily life.",
-      link: "https://www.rd.com/list/over-40-new-uses-for-aluminum-foil/"
-    },
-    {
-      id: 3,
-      image: "/assets/articles/articl3.jpg",
-      category: "Innovation",
-      readTime: "5 min read",
-      title: "ALUMINIUM VS. PLASTIC",
-      description: "Understand why aluminium is a superior choice for packaging.",
-      link: "https://www.wnapt.com/knowledge-center/blogs/5-benefits-of-aluminum-vs-plastic-you-need-to-know"
-    }
-  ];
+  const textRef = useRef(null);
+  const articles = [ { id: 1, image: "/assets/articles/articl1.jpg", category: "Aluminium", readTime: "5 min read", title: "WHY ALUMINIUM FOIL SHINES", description: "Learn how aluminium foil outperforms plastic in various applications.", link: " https://www.foilonline.com/what-are-the-hidden-advantages-of-using-aluminum-foil-containers-for-food-storage/" }, { id: 2, image: "/assets/articles/glasses.jpg", category: "Sustainability", readTime: "5 min read", title: "THE VERSATILITY OF FOIL", description: "Explore the many uses of aluminium foil in daily life.", link: "https://www.rd.com/list/over-40-new-uses-for-aluminum-foil/" }, { id: 3, image: "/assets/articles/articl3.jpg", category: "Innovation", readTime: "5 min read", title: "ALUMINIUM VS. PLASTIC", description: "Understand why aluminium is a superior choice for packaging.", link: "https://www.wnapt.com/knowledge-center/blogs/5-benefits-of-aluminum-vs-plastic-you-need-to-know" } ];
 
+  useEffect(() => {
+    let ctx;
+    (async () => {
+      const gsap = (await import("gsap")).default;
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      gsap.registerPlugin(ScrollTrigger);
+
+      if (!textRef.current) return;
+
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          textRef.current,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.1,
+            ease: "power3.out",
+             scrollTrigger: {
+              trigger: textRef.current,   // 👈 the element itself
+              start: "top 90%",
+              toggleActions: "play none none reverse", // 👈 replay when scrolling up
+              // markers: true, // enable for debugging
+            },
+          }
+        );
+      });
+    })();
+
+    return () => ctx?.revert();
+  }, []);
+
+  // ...rest of your component
   return (
     <section id="Articles" className="bg-[#FFF] py-[80px]">
-      <div className="custom-container  mx-auto ">
+      <div className="custom-container mx-auto">
         <div className="text-center !mb-[60px]">
           <p className="text-[#666] text-sm font-medium mb-2 tracking-wide">BLOG</p>
           <h2 className="text-black text-[35px] md:!text-[45px] font-bold leading-tight mb-4">
-            <span className="text-green-700 pr-[10px]">Explore</span>Aluminium Foil
+            <span ref={textRef} className="explore-span text-green-700 pr-[10px]">Explore</span>
+            Aluminium Foil
           </h2>
-          <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-lg">
             Discover the benefits of aluminium foil
           </p>
         </div>

@@ -49,7 +49,7 @@ const Contact = () => {
         <div className="flex flex-col justify-center items-center w-full">
           <h2 className="text-[35px] md:text-[45px] font-bold"><span className='text-green-700 pr-[10px]'>Contact</span>Us</h2>
           <form onSubmit={sendData}>
-            <div className="input__parent w-[400px] !mt-[20px] pl-[20px] pr-[20px]">
+            <div className="input__parent w-[300px] md:w-[400px] !mt-[20px] pl-[20px] pr-[20px]">
 
               {/* Name */}
               <div className="!mb-[10px]">

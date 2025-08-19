@@ -13,7 +13,7 @@ const Footer = () => {
             className="h-[50px] !mb-[50px]"
           />
           <h3 className="text-[30px] !mb-[15px]">Contacts</h3>
-          <div className="flex items-center gap-[10px]">
+          <div className="flex flex-col items-center gap-[10px] sm:flex-row">
             <p className="text-[20px] pl-[5px]">+92 3159982783</p>
             <p className="text-[20px] pl-[5px]">+92 3369992787</p>
           </div>

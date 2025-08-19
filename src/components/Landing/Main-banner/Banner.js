@@ -1,4 +1,5 @@
-import React from 'react'
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 const Banner = () => {
 
@@ -19,13 +20,47 @@ const Banner = () => {
         { icon: <svg height="50" width="50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M24 48C10.7 48 0 58.7 0 72C0 85.3 10.7 96 24 96L69.3 96C73.2 96 76.5 98.8 77.2 102.6L129.3 388.9C135.5 423.1 165.3 448 200.1 448L456 448C469.3 448 480 437.3 480 424C480 410.7 469.3 400 456 400L200.1 400C188.5 400 178.6 391.7 176.5 380.3L171.4 352L475 352C505.8 352 532.2 330.1 537.9 299.8L568.9 133.9C572.6 114.2 557.5 96 537.4 96L124.7 96L124.3 94C119.5 67.4 96.3 48 69.2 48L24 48zM208 576C234.5 576 256 554.5 256 528C256 501.5 234.5 480 208 480C181.5 480 160 501.5 160 528C160 554.5 181.5 576 208 576zM432 576C458.5 576 480 554.5 480 528C480 501.5 458.5 480 432 480C405.5 480 384 501.5 384 528C384 554.5 405.5 576 432 576z"/></svg>, title: 'Aluminium Foil F3', subtitle: 'Ideal for storage' }
     ]
 
+  const textRef = useRef(null);
+  const texts = ["Healthier Choice", "Reliable", "Durable Packaging", "Trusted Quality", "Nationwide Supply"];
+  let index = 0;
+
+  useEffect(() => {
+    const el = textRef.current;
+
+    const changeText = () => {
+      // animate down + fade out
+      gsap.to(el, {
+        y: 30,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.in",
+        onComplete: () => {
+          // change text
+          index = (index + 1) % texts.length;
+          el.textContent = texts[index];
+
+          // animate up + fade in
+          gsap.fromTo(
+            el,
+            { y: -30, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
+          );
+        },
+      });
+    };
+
+    const interval = setInterval(changeText, 2000); // every 3 sec
+    return () => clearInterval(interval);
+  }, []);
+
     return (
 
         <>
 
-            <section id='Home' className='bg-[#FBFBFB]'>
-                <div className="flex flex-col items-center gap-[90px] pt-[225px] text-center bg-[url('/assets/main-banner/mainbannerbg.png')] bg-center p-[140px]">
-                    <h1 className='lg:text-[65px] sm:text-[45px] text-nowrap text-[40px] font-[600] text-black'> Peky <span className='block text-[15px] sm:text-[20px] text-[#000] lg:text-[30px] '>Healthier Choice</span></h1>
+            <section id='Home' className='bg-[#FBFBFB] !mt-[50px] md:!mt-[100px]'>
+                <div className="flex flex-col items-center bg-cover text-center bg-[url('/assets/main-banner/bg.png')] bg-center p-[140px] md:pt-[150px] md:pb-[200px]">
+                    <h1 className='flex items-center gap-[10px] lg:text-[80px] sm:text-[60px] text-nowrap text-[60px] font-[550] text-black'> <img src="/assets/main-banner/peky_icon_only.png" className="h-[80px]" alt="" /> Peky </h1>
+                    <span ref={textRef} className='block text-[22px] sm:text-[25px] text-green-700 lg:text-[33px] '>Healthier Choice</span>
                 </div>
                 <div className="custom-container">
                     <div className='flex flex-wrap  justify-center md:!justify-between gap-[60px]  pt-[50px] pb-[50px] lg:pr-[10px] lg:pl-[10px] bg-[#FBFBFB]'>
@@ -34,7 +69,7 @@ const Banner = () => {
                         <div key={index} className="flex flex-col g-[10px] text-center items-center">
                             {item.icon}
                             <p className='text-[16px] md:!text-[16px] font-[600] !mt-[10px] '>{item.title}</p>
-                            <p className='text-[12px] md:!text-[12px]'>{item.subtitle}</p>
+                            <p className='text-[14px] md:!text-[14px]'>{item.subtitle}</p>
                         </div>
                             ))
                         }

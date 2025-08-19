@@ -9,11 +9,19 @@ import { API_URL } from "../../lib/config";
 export default function ProductPage() {
   const router = useRouter();
   const { id } = router.query;
+const BASE_QTY = 10
+const [quantity, setQuantity] = useState(BASE_QTY)
 
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isImageLoading, setIsImageLoading] = useState(true);
+
+  const priceForQty = (price, qty) => {
+  if (!price) return 0
+  const p = typeof price === 'string' ? parseFloat(price) : price
+  return p * (qty / BASE_QTY)
+}
 
   // Product-specific ratings and details data
   const productRatings = {
@@ -85,8 +93,8 @@ export default function ProductPage() {
           <svg className="w-24 h-24 mx-auto text-gray-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
           </svg>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Product not found</h1>
-          <p className="text-gray-600 text-base lg:text-lg">The product you're looking for doesn't exist or has been removed.</p>
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">Loading...</h1>
+          <p className="text-gray-600 text-base lg:text-lg">Please wait</p>
         </div>
       </div>
     );
@@ -119,12 +127,12 @@ export default function ProductPage() {
     setIsImageLoading(false);
   };
 
-  const formatPrice = (price) => {
+const formatPrice = (price) => {
     if (!price) return null;
     const numericPrice = typeof price === 'string'
       ? parseFloat(price.replace(/[^0-9.]/g, ''))
       : price;
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(numericPrice);
+    return new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR' }).format(numericPrice);
   };
 
   const renderStars = (rating) => {
@@ -283,13 +291,39 @@ export default function ProductPage() {
               </h1>
               
               {product.price && (
-                <div className="flex items-baseline space-x-4 !mb-6">
-                  <span className="text-3xl sm:text-4xl font-bold text-black">{formatPrice(product.price)}</span>
-                  {product.original_price && product.original_price !== product.price && (
-                    <span className="text-xl text-gray-400 line-through">{formatPrice(product.original_price)}</span>
-                  )}
-                </div>
-              )}
+  <div className="flex flex-col space-y-4 !mb-6">
+    {/* ✅ Total for selected quantity */}
+    <div className="flex items-baseline space-x-4">
+      <span className="text-3xl sm:text-4xl font-bold text-black">
+        {formatPrice(priceForQty(product.price, quantity))}
+      </span>
+      {product.original_price && product.original_price !== product.price && (
+        <span className="text-xl text-gray-400 line-through">
+          {formatPrice(priceForQty(product.original_price, quantity))}
+        </span>
+      )}
+    </div>
+
+    {/* ✅ Quantity selector (steps of 10, min 10) */}
+    <div className="flex items-center space-x-4">
+      <button
+        onClick={() => setQuantity((q) => Math.max(BASE_QTY, q - BASE_QTY))}
+        className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+      >
+        -10
+      </button>
+      <span className="text-lg font-medium">{quantity}</span>
+      <button
+        onClick={() => setQuantity((q) => q + BASE_QTY)}
+        className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+      >
+        +10
+      </button>
+    </div>
+  </div>
+)}
+
+
               
             </div>
 

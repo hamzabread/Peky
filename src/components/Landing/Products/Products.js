@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { API_URL } from "@/lib/config";
@@ -29,11 +29,41 @@ export default function Products() {
     fetchProducts();
   }, []);
 
+  // ✅ Lazy-load gsap only on client
+  useEffect(() => {
+    if (!loading && products.length > 0) {
+      (async () => {
+        const gsap = (await import("gsap")).default;
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.fromTo(
+          ".product-card",
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.1,
+            stagger: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ".products-grid",
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+        ScrollTrigger.refresh();
+      })();
+    }
+    
+  }, [loading, products]);
+
   return (
     <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
       <div className="custom-container">
         <h2 className="text-[35px] md:text-[45px] text-center !mb-[30px] font-bold">
-          Our <span className="pl-[5px] text-green-700">Products</span> 
+          Our <span className="pl-[5px] text-green-700">Products</span>
         </h2>
 
         {loading ? (
@@ -45,11 +75,11 @@ export default function Products() {
             Products are unavailable. Please check back soon.
           </p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 justify-center gap-[10px] md:gap-[60px] !pt-[30px]">
+          <div className="products-grid grid grid-cols-1 md:grid-cols-2 justify-center gap-[10px] md:gap-[60px] !pt-[30px]">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-white pb-[20px] group rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
+                className="product-card bg-white pb-[20px] group rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
               >
                 <Link href={`/products/${product.id}`}>
                   <div className="relative overflow-hidden">
@@ -63,7 +93,7 @@ export default function Products() {
                     {product.title}
                   </h3>
                   <p className="text-[14px] pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px]">
-                    {product.price}
+                    Rs. {product.price} / 10
                   </p>
                   <svg
                     className="absolute bottom-[30px] right-[10px] cursor-pointer"
