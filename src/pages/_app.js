@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }) {
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
         <meta name="description" content="Peky is a company that sells premium aluminium foil"></meta>
-        <title>Peky</title>
+        <title>peky</title>
       </Head>
       <ToastContainer />
       <Component {...pageProps} />
