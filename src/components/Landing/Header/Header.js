@@ -1,7 +1,7 @@
-"use client"
+
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { API_URL } from "../../../lib/config"
+const API_URL = "your-api-url" // Placeholder for config
 
 const Header = (props) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -15,8 +15,9 @@ const Header = (props) => {
 
   // Check if user is logged in
   useEffect(() => {
-    const token = localStorage.getItem("access_token")
-    setIsLoggedIn(!!token)
+    // const token = localStorage.getItem("access_token")
+    // setIsLoggedIn(!!token)
+    setIsLoggedIn(false) // Placeholder for Claude
   }, [])
 
   // Fetch cart items when cart opens and user is logged in
@@ -27,24 +28,17 @@ const Header = (props) => {
   }, [isCartOpen, isLoggedIn])
 
   const fetchCartItems = async () => {
-    const token = localStorage.getItem("access_token")
-    if (!token) return
+    // const token = localStorage.getItem("access_token")
+    // if (!token) return
 
     setCartLoading(true)
     setCartError("")
 
     try {
-      const response = await fetch(`${API_URL}/cart`, {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      })
+      // Placeholder API call
+      const result = { success: true, items: [] }
 
-      const result = await response.json()
-
-      if (response.ok && result.success) {
+      if (result.success) {
         setCartItems(result.items || [])
       } else {
         setCartError(result.message || "Failed to load cart")
@@ -58,12 +52,12 @@ const Header = (props) => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("id_token")
-    localStorage.removeItem("refresh_token")
+    // localStorage.removeItem("access_token")
+    // localStorage.removeItem("id_token")
+    // localStorage.removeItem("refresh_token")
     setIsLoggedIn(false)
     setCartItems([])
-    window.location.href = "/"
+    // window.location.href = "/"
   }
 
   const calculateTotal = () => {
@@ -122,20 +116,20 @@ const Header = (props) => {
             </div>
 
             {/* Login/Logout */}
- 
+
           </div>
-                     {!isLoggedIn ? (
-              <Link href='/login' className='cursor-pointer'>
-                <button className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors">Login</button>
-              </Link>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors"
-              >
-                Logout
-              </button>
-            )}
+          {!isLoggedIn ? (
+            <Link href='/login' className='cursor-pointer'>
+              <button className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors">Login</button>
+            </Link>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors"
+            >
+              Logout
+            </button>
+          )}
         </nav>
 
         {/* Mobile Nav */}
@@ -143,14 +137,14 @@ const Header = (props) => {
           <Link href='/'>
             <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px]' />
           </Link>
-          
+
           <div className="flex items-center gap-4">
             {/* Mobile Cart Icon */}
-            <div className="relative">
-              <button onClick={() => setIsCartOpen(true)} className="relative">
+            <div className="relative hidden">
+              <button onClick={() => setIsCartOpen(true)} className="relative hidden">
                 <svg
-                  height="28"
-                  width="28"
+                  height="0"
+                  width="0"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 640 640"
                   className='cursor-pointer hover:opacity-80 transition-opacity'
@@ -164,7 +158,7 @@ const Header = (props) => {
                 </svg>
                 {/* Mobile Cart Badge */}
                 {isLoggedIn && cartItems.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+                  <span className="absolute hidden -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4  items-center justify-center text-[10px]">
                     {getCartItemCount()}
                   </span>
                 )}
@@ -187,62 +181,70 @@ const Header = (props) => {
       </header>
 
       {/* Mobile Menu Offcanvas */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-black/50 bg-opacity-50" onClick={() => setIsOpen(false)}></div>
-          <div className="absolute top-0 left-0 h-full w-80 bg-black transform transition-transform duration-300 ease-in-out">
+<div className={`fixed inset-0 z-50 md:hidden ${isOpen ? '' : 'pointer-events-none'}`}>
+  {/* Overlay */}
+  <div
+    className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ease-in-out
+                ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+    onClick={() => setIsOpen(false)}
+  />
+
+  {/* Panel */}
+  <div
+    className={`absolute top-0 left-0 h-full w-80 bg-black transform transition-transform duration-300 ease-in-out
+                ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+    role="dialog" aria-modal="true"
+  >
             <div className="p-6">
-              <div className="flex justify-between items-center mb-8">
+              <div className="flex justify-between items-center !mb-8">
                 <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px]' />
-                <button onClick={() => setIsOpen(false)} className="text-white">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                </button>
+                <button onClick={() => setIsOpen(false)} className="text-white">✕</button>
               </div>
-              
-              <ul className="space-y-6 !pt-[30px] !pb-[30px]">
+              <ul className="space-y-6">
                 {menuItems.map((item) => (
                   <li key={item}>
-                    <a href={`#${item}`} className="text-white text-lg hover:text-gray-300 transition-colors">
-                      {item}
-                    </a>
+                    <a href={`#${item}`} className="text-white text-lg hover:text-gray-300">{item}</a>
                   </li>
                 ))}
               </ul>
-
-              <div className="mt-8 pt-6 border-t border-gray-700">
+              <div className="!mt-8 pt-6 border-t border-gray-700">
                 {!isLoggedIn ? (
                   <Link href='/login'>
-                    <button className="w-full bg-white rounded-sm px-[20px] py-[12px] text-black hover:bg-gray-100 transition-colors">
-                      Login
-                    </button>
+                    <button className="w-full bg-white rounded-sm px-5 py-3 text-black">Login</button>
                   </Link>
                 ) : (
-                  <button
-                    onClick={handleLogout}
-                    className="w-full bg-white rounded-sm px-[20px] py-[12px] text-black hover:bg-gray-100 transition-colors"
-                  >
-                    Logout
-                  </button>
+                  <button onClick={handleLogout} className="w-full bg-white rounded-sm px-5 py-3 text-black">Logout</button>
                 )}
               </div>
             </div>
           </div>
         </div>
-      )}
+
+
+      
 
       {/* Cart Offcanvas */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/40 bg-opacity-20" onClick={() => setIsCartOpen(false)}></div>
-          <div className={`absolute top-0 right-0 h-full w-full max-w-md bg-white transform transition-transform duration-300 ease-in-out ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div
+            className="absolute inset-0 bg-black/40 bg-opacity-20 transition-opacity duration-300 ease-in-out"
+            onClick={() => setIsCartOpen(false)}
+            style={{
+              opacity: isCartOpen ? 1 : 0
+            }}
+          ></div>
+          <div
+            className="absolute top-0 right-0 h-full w-full max-w-md bg-white transform transition-transform duration-300 ease-in-out"
+            style={{
+              transform: isCartOpen ? 'translateX(0)' : 'translateX(100%)'
+            }}
+          >
             {/* Cart Header */}
             <div className="flex justify-between items-center !p-6 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">Shopping Cart</h2>
               <button onClick={() => setIsCartOpen(false)} className="text-gray-500 hover:text-gray-700">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </button>
             </div>
@@ -275,7 +277,7 @@ const Header = (props) => {
                   /* Error State */
                   <div className="text-center !py-8">
                     <p className="text-red-500 !mb-4">{cartError}</p>
-                    <button 
+                    <button
                       onClick={fetchCartItems}
                       className="bg-black text-white !px-4 !py-2 rounded-lg hover:bg-gray-800 transition-colors"
                     >
@@ -297,9 +299,9 @@ const Header = (props) => {
                     {cartItems.map((item, index) => (
                       <div key={item.id || index} className="flex items-center space-x-4 !p-4 border border-gray-200 rounded-lg">
                         {item.image && (
-                          <img 
-                            src={item.image} 
-                            alt={item.name} 
+                          <img
+                            src={item.image}
+                            alt={item.name}
                             className="w-16 h-16 object-cover rounded-lg"
                           />
                         )}

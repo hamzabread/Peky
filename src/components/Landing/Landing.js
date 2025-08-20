@@ -7,6 +7,7 @@ import Articles from './Articles/Articles'
 import Benifits from './Benifits/Benifits'
 import Footer from './Footer/Footer'
 import Contact from './Contact/Contact'
+import ThemeToggle from '../ThemeToggle'
 
 
 export default function Landing() {
