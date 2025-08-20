@@ -58,9 +58,9 @@ const Banner = () => {
         <>
 
             <section id='Home' className='bg-[#FBFBFB] !mt-[50px] md:!mt-[100px]'>
-                <div className="flex flex-col items-center bg-cover text-center bg-[url('/assets/main-banner/bg.png')] bg-center p-[140px] md:pt-[150px] md:pb-[200px]">
-                    <h1 className='flex items-center gap-[10px] lg:text-[80px] sm:text-[60px] text-nowrap text-[60px] font-[550] text-black'> <img src="/assets/main-banner/peky_icon_only.png" className="h-[80px]" alt="" /> Peky </h1>
-                    <span ref={textRef} className='block text-[22px] sm:text-[25px] text-black lg:text-[33px] '>Healthier Choice</span>
+                <div className="flex flex-col items-center bg-cover text-center bg-[url('/assets/main-banner/bg.png')] bg-center pt-[140px] pb-[140px] md:pt-[150px] md:pb-[200px]">
+                    <h1 className='flex items-center gap-[10px] lg:text-[80px] sm:text-[40px] text-nowrap text-[40px] font-[550] text-black'> <img src="/assets/main-banner/peky_icon_only.png" className="lg:h-[80px] h-[35px]" alt="" /> Peky </h1>
+                    <span ref={textRef} className='block text-nowrap text-[22px] sm:text-[25px] text-black lg:text-[33px] '>Healthier Choice</span>
                 </div>
                 <div className="custom-container">
                     <div className='flex flex-wrap  justify-center md:!justify-between gap-[60px]  pt-[50px] pb-[50px] lg:pr-[10px] lg:pl-[10px] bg-[#FBFBFB]'>
