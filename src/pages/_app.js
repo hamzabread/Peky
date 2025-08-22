@@ -27,9 +27,9 @@ export default function App({ Component, pageProps }) {
         />
         <meta
           name="description"
-          content="Peky is a company that sells premium aluminium foil"
+          content="Peky is a Pakistani company that sells premium aluminium foil"
         ></meta>
-        <title>peky</title>
+        <title>Peky │ Pakistan's Best Aluminium Foil</title>
               {/* Standard favicon */}
         <link rel="icon" href="/favicon/favicon.ico" />
 
