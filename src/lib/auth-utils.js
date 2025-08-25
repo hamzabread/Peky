@@ -17,7 +17,7 @@ export const getRefreshToken = () => {
 }
 
 /**
- * Clear all tokens and log user out
+ * Clear all tokens
  */
 export const logout = () => {
   if (typeof window === "undefined") return
@@ -25,7 +25,7 @@ export const logout = () => {
   localStorage.removeItem("id_token")
   localStorage.removeItem("refresh_token")
 }
- 
+
 /**
  * Refresh the access token using the refresh token
  */
@@ -45,7 +45,7 @@ export const refreshAccessToken = async () => {
     const result = await response.json()
 
     if (!response.ok || !result.success) {
-      throw new Error(result.error || "Token refresh failed")
+      throw new Error(result.message || "Token refresh failed")
     }
 
     // ✅ store new tokens
@@ -59,8 +59,6 @@ export const refreshAccessToken = async () => {
     return result.tokens.access_token
   } catch (error) {
     console.error("Token refresh error:", error)
-    logout()
-    window.location.href = "/login"
     throw error
   }
 }
@@ -72,31 +70,28 @@ export const authenticatedFetch = async (url, options = {}) => {
   let accessToken = getAccessToken()
   if (!accessToken) throw new Error("Not authenticated")
 
-  let response = await fetch(url, {
+  const buildOptions = (token) => ({
     ...options,
     headers: {
       ...(options.headers || {}),
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${token}`,
       ...(options.body && !(options.body instanceof FormData)
         ? { "Content-Type": "application/json" }
         : {}),
     },
+    body:
+      options.body && !(options.body instanceof FormData)
+        ? JSON.stringify(options.body)
+        : options.body,
   })
+
+  let response = await fetch(url, buildOptions(accessToken))
 
   if (response.status === 401) {
     try {
       console.log("Access token expired, refreshing…")
       accessToken = await refreshAccessToken()
-      response = await fetch(url, {
-        ...options,
-        headers: {
-          ...(options.headers || {}),
-          Authorization: `Bearer ${accessToken}`,
-          ...(options.body && !(options.body instanceof FormData)
-            ? { "Content-Type": "application/json" }
-            : {}),
-        },
-      })
+      response = await fetch(url, buildOptions(accessToken))
     } catch (err) {
       console.error("Refresh failed:", err)
       throw err

@@ -15,9 +15,9 @@ const Header = (props) => {
 
   // Check if user is logged in
   useEffect(() => {
-    // const token = localStorage.getItem("access_token")
-    // setIsLoggedIn(!!token)
-    setIsLoggedIn(false) // Placeholder for Claude
+    const token = localStorage.getItem("access_token")
+    setIsLoggedIn(!!token)
+
   }, [])
 
   // Fetch cart items when cart opens and user is logged in
@@ -90,45 +90,75 @@ const Header = (props) => {
             )}
 
             {/* Cart Icon */}
-            <div className="relative hidden">
-              <button onClick={() => setIsCartOpen(true)} className="relative">
-                {/* <svg
-                  height="30"
-                  width="30"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 640 640"
-                  className='cursor-pointer hover:opacity-80 transition-opacity'
-                >
-                  <path
-                    d="M24 48C10.7 48 0 58.7 0 72C0 85.3 10.7 96 24 96L69.3 96C73.2 96 76.5 98.8 77.2 102.6L129.3 388.9C135.5 423.1 165.3 448 200.1 448L456 448C469.3 448 480 437.3 480 424C480 410.7 469.3 400 456 400L200.1 400C188.5 400 178.6 391.7 176.5 380.3L171.4 352L475 352C505.8 352 532.2 330.1 537.9 299.8L568.9 133.9C572.6 114.2 557.5 96 537.4 96L124.7 96L124.3 94C119.5 67.4 96.3 48 69.2 48L24 48zM208 576C234.5 576 256 554.5 256 528C256 501.5 234.5 480 208 480C181.5 480 160 501.5 160 528C160 554.5 181.5 576 208 576zM432 576C458.5 576 480 554.5 480 528C480 501.5 458.5 480 432 480C405.5 480 384 501.5 384 528C384 554.5 405.5 576 432 576z"
-                    fill="none"
-                    stroke="#FFF"
-                    strokeWidth="40"
-                  />
-                </svg> */}
-                {/* Cart Badge */}
-                {isLoggedIn && cartItems.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {getCartItemCount()}
-                  </span>
-                )}
-              </button>
-            </div>
+
 
             {/* Login/Logout */}
 
           </div>
           {!isLoggedIn ? (
-            <Link href='/login' className='cursor-pointer'>
-              <button className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors">Login</button>
-            </Link>
+            <div className='flex gap-[30px] items-center'>
+              <div className="relative">
+                <button onClick={() => setIsCartOpen(true)} className="relative">
+                  <svg
+                    height="30"
+                    width="30"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 640 640"
+                    className='cursor-pointer hover:opacity-80 transition-opacity'
+                  >
+                    <path
+                      d="M24 48C10.7 48 0 58.7 0 72C0 85.3 10.7 96 24 96L69.3 96C73.2 96 76.5 98.8 77.2 102.6L129.3 388.9C135.5 423.1 165.3 448 200.1 448L456 448C469.3 448 480 437.3 480 424C480 410.7 469.3 400 456 400L200.1 400C188.5 400 178.6 391.7 176.5 380.3L171.4 352L475 352C505.8 352 532.2 330.1 537.9 299.8L568.9 133.9C572.6 114.2 557.5 96 537.4 96L124.7 96L124.3 94C119.5 67.4 96.3 48 69.2 48L24 48zM208 576C234.5 576 256 554.5 256 528C256 501.5 234.5 480 208 480C181.5 480 160 501.5 160 528C160 554.5 181.5 576 208 576zM432 576C458.5 576 480 554.5 480 528C480 501.5 458.5 480 432 480C405.5 480 384 501.5 384 528C384 554.5 405.5 576 432 576z"
+                      fill="none"
+                      stroke="#FFF"
+                      strokeWidth="40"
+                    />
+                  </svg>
+                  {/* Cart Badge */}
+                  {isLoggedIn && cartItems.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {getCartItemCount()}
+                    </span>
+                  )}
+                </button>
+              </div>
+              <Link href='/login' className='cursor-pointer'>
+                <button className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors">Login</button>
+              </Link>
+            </div>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors"
-            >
-              Logout
-            </button>
+            <div className='flex items-center gap-[30px]'>
+              <div className="relative">
+                <button onClick={() => setIsCartOpen(true)} className="relative">
+                  <svg
+                    height="30"
+                    width="30"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 640 640"
+                    className='cursor-pointer hover:opacity-80 transition-opacity'
+                  >
+                    <path
+                      d="M24 48C10.7 48 0 58.7 0 72C0 85.3 10.7 96 24 96L69.3 96C73.2 96 76.5 98.8 77.2 102.6L129.3 388.9C135.5 423.1 165.3 448 200.1 448L456 448C469.3 448 480 437.3 480 424C480 410.7 469.3 400 456 400L200.1 400C188.5 400 178.6 391.7 176.5 380.3L171.4 352L475 352C505.8 352 532.2 330.1 537.9 299.8L568.9 133.9C572.6 114.2 557.5 96 537.4 96L124.7 96L124.3 94C119.5 67.4 96.3 48 69.2 48L24 48zM208 576C234.5 576 256 554.5 256 528C256 501.5 234.5 480 208 480C181.5 480 160 501.5 160 528C160 554.5 181.5 576 208 576zM432 576C458.5 576 480 554.5 480 528C480 501.5 458.5 480 432 480C405.5 480 384 501.5 384 528C384 554.5 405.5 576 432 576z"
+                      fill="none"
+                      stroke="#FFF"
+                      strokeWidth="40"
+                    />
+                  </svg>
+                  {/* Cart Badge */}
+                  {isLoggedIn && cartItems.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {getCartItemCount()}
+                    </span>
+                  )}
+                </button>
+              </div>
+
+              <button
+                onClick={handleLogout}
+                className="bg-white rounded-sm px-[20px] py-[8px] text-black hover:bg-gray-100 transition-colors"
+              >
+                Logout
+              </button>
+            </div>
           )}
         </nav>
 
@@ -140,8 +170,8 @@ const Header = (props) => {
 
           <div className="flex items-center gap-4">
             {/* Mobile Cart Icon */}
-            <div className="relative hidden">
-              <button onClick={() => setIsCartOpen(true)} className="relative hidden">
+            <div className="relative ">
+              <button onClick={() => setIsCartOpen(true)} className="relative ">
                 <svg
                   height="0"
                   width="0"
@@ -158,7 +188,7 @@ const Header = (props) => {
                 </svg>
                 {/* Mobile Cart Badge */}
                 {isLoggedIn && cartItems.length > 0 && (
-                  <span className="absolute hidden -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4  items-center justify-center text-[10px]">
+                  <span className="absolute  -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4  items-center justify-center text-[10px]">
                     {getCartItemCount()}
                   </span>
                 )}
@@ -181,47 +211,47 @@ const Header = (props) => {
       </header>
 
       {/* Mobile Menu Offcanvas */}
-<div className={`fixed inset-0 z-50 md:hidden ${isOpen ? '' : 'pointer-events-none'}`}>
-  {/* Overlay */}
-  <div
-    className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ease-in-out
+      <div className={`fixed inset-0 z-50 md:hidden ${isOpen ? '' : 'pointer-events-none'}`}>
+        {/* Overlay */}
+        <div
+          className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ease-in-out
                 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-    onClick={() => setIsOpen(false)}
-  />
+          onClick={() => setIsOpen(false)}
+        />
 
-  {/* Panel */}
-  <div
-    className={`absolute top-0 left-0 h-full w-80 bg-black transform transition-transform duration-300 ease-in-out
+        {/* Panel */}
+        <div
+          className={`absolute top-0 left-0 h-full w-80 bg-black transform transition-transform duration-300 ease-in-out
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
-    role="dialog" aria-modal="true"
-  >
-            <div className="p-6">
-              <div className="flex justify-between items-center !mb-8">
-                <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px]' />
-                <button onClick={() => setIsOpen(false)} className="text-white">✕</button>
-              </div>
-              <ul className="space-y-6">
-                {menuItems.map((item) => (
-                  <li key={item}>
-                    <a href={`#${item}`} className="text-white text-lg hover:text-gray-300">{item}</a>
-                  </li>
-                ))}
-              </ul>
-              <div className="!mt-8 pt-6 border-t border-gray-700">
-                {!isLoggedIn ? (
-                  <Link href='/login'>
-                    <button className="w-full bg-white rounded-sm px-5 py-3 text-black">Login</button>
-                  </Link>
-                ) : (
-                  <button onClick={handleLogout} className="w-full bg-white rounded-sm px-5 py-3 text-black">Logout</button>
-                )}
-              </div>
+          role="dialog" aria-modal="true"
+        >
+          <div className="p-6">
+            <div className="flex justify-between items-center !mb-8">
+              <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px]' />
+              <button onClick={() => setIsOpen(false)} className="text-white">✕</button>
+            </div>
+            <ul className="space-y-6">
+              {menuItems.map((item) => (
+                <li key={item}>
+                  <a href={`#${item}`} className="text-white text-lg hover:text-gray-300">{item}</a>
+                </li>
+              ))}
+            </ul>
+            <div className="!mt-8 pt-6 border-t border-gray-700">
+              {!isLoggedIn ? (
+                <Link href='/login'>
+                  <button className="w-full bg-white rounded-sm px-5 py-3 text-black">Login</button>
+                </Link>
+              ) : (
+                <button onClick={handleLogout} className="w-full bg-white rounded-sm px-5 py-3 text-black">Logout</button>
+              )}
             </div>
           </div>
         </div>
+      </div>
 
 
-      
+
 
       {/* Cart Offcanvas */}
       {isCartOpen && (
