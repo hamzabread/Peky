@@ -92,6 +92,9 @@ export default function Products() {
                   <h3 className="text-[18px] pr-[15px] pl-[15px] sm:!text-[20px] font-bold !mt-[15px]">
                     {product.title}
                   </h3>
+                  <h4 className="text-[16px] pr-[15px] pl-[15px] sm:!text-[18px] text-[#666] !mt-[5px]">
+                    {product.official_name}
+                  </h4>
                   <p className="text-[14px] pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px]">
                     Rs. {product.price} / 10 Pieces
                   </p>

@@ -61,16 +61,16 @@ const Banner = () => {
 
             <section id='Home' className='bg-[#FBFBFB] !mt-[80px] md:!mt-[100px]'>
 
-                <div className="relative z-10 flex bg-[#E5F7F5] flex-col items-center text-center pt-[140px] pb-[140px] md:pt-[150px] md:pb-[200px]">
+                <div className="relative z-10 flex bg-[#E5F7F5] flex-col justify-center items-center text-center md:h-[600px] h-[400px]">
                     <Image
-                        src="/assets/main-banner/bg.png"
+                        src="/assets/main-banner/background-main.png"
                         alt="Background"
                         fill
                         priority
-                        className="object-cover object-center scale-100 z-0"
+                        className="object-contain md:object-cover object-center scale-100 z-0"
                     />
 
-                    <h1 className="flex items-center z-10 gap-[10px] lg:text-[80px] sm:text-[40px] text-nowrap text-[40px] font-[550] text-black">
+                    <h1 className="flex items-center z-10 gap-[10px] pr-[20px] md:pr-[35px] lg:text-[65px] sm:text-[40px] text-nowrap text-[40px] font-[550] text-black">
                         <img
                             src="/assets/main-banner/peky_icon_only.png"
                             className="lg:h-[60px] pl-[5px] h-[35px]"
@@ -81,7 +81,7 @@ const Banner = () => {
 
                     <span
                         ref={textRef}
-                        className="block pl-[15px] text-nowrap text-[22px] sm:text-[25px] text-black lg:text-[33px]"
+                        className="block text-nowrap text-[22px] sm:text-[25px] text-black lg:text-[33px]"
                     >
                         Healthier Choice
                     </span>
