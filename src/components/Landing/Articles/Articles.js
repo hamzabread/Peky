@@ -60,6 +60,7 @@ const Articles = () => {
                   <img 
                     src={article.image} 
                     alt={article.title}
+                    loading="lazy"
                     className="w-full h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute bottom-4 left-4 flex items-center gap-2">
