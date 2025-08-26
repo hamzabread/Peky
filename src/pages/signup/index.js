@@ -116,7 +116,7 @@ const index = () => {
   return (
     <>
       <Header />
-      <div className="min-h-[100vh] flex flex-col justify-center items-center py-10">
+      <div className="min-h-[100vh] !mt-[50px] flex flex-col justify-center items-center py-10">
         <div className="bg-white flex flex-col justify-center items-center rounded-[5px] shadow-lg w-[400px]">
           <h3 className="bg-black w-[100%] text-white text-center p-[20px] text-[20px] rounded-t-[5px]">
             Sign Up

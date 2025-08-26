@@ -62,33 +62,6 @@ export default function ProductPage() {
     4: { rating: 4.7, reviews: 156 },
   };
 
-  const productDetails = {
-    1: {
-      density: "Light",
-      material: "Premium Aluminum",
-      dimensions: "Small",
-      capacity: "250ml",
-    },
-    2: {
-      density: "Medium",
-      material: "Food Grade Aluminum",
-      dimensions: "Medium",
-      capacity: "500ml",
-    },
-    3: {
-      density: "Heavy",
-      material: "Industrial Aluminum",
-      dimensions: "Large",
-      capacity: "750ml",
-    },
-    4: {
-      density: "Extra Heavy",
-      material: "Commercial Grade",
-      dimensions: "Family",
-      capacity: "1000ml",
-    },
-  };
-
   useEffect(() => {
     if (!id) return;
     async function fetchProduct() {
@@ -122,8 +95,8 @@ async function addToCart() {
   try {
     const response = await authenticatedFetch(`${API_URL}/cart/add`, {
       method: "POST",
-      body: JSON.stringify({ product_id: id, quantity }),
-    }, API_URL);
+      body: { product_id: id, quantity }, // ✅ object, not string
+    });
 
     const data = await response.json();
     if (!response.ok || !data.success) {
@@ -132,12 +105,40 @@ async function addToCart() {
     }
 
     console.log("✅ Item added:", data.message);
+    setSuccessMsg(data.message);
   } catch (err) {
     setErrorCart(err.message);
   } finally {
     setLoadingCart(false);
   }
 }
+
+  const productDetails = {
+    1: {
+      density: "Light",
+      material: "Premium Aluminum",
+      dimensions: "Small",
+      capacity: "250ml",
+    },
+    2: {
+      density: "Medium",
+      material: "Food Grade Aluminum",
+      dimensions: "Medium",
+      capacity: "500ml",
+    },
+    3: {
+      density: "Heavy",
+      material: "Industrial Aluminum",
+      dimensions: "Large",
+      capacity: "750ml",
+    },
+    4: {
+      density: "Extra Heavy",
+      material: "Commercial Grade",
+      dimensions: "Family",
+      capacity: "1000ml",
+    },
+  };
 
   // Error UI
   if (error) {

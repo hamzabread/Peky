@@ -52,12 +52,12 @@ const Header = (props) => {
   }
 
   const handleLogout = () => {
-    // localStorage.removeItem("access_token")
-    // localStorage.removeItem("id_token")
-    // localStorage.removeItem("refresh_token")
+    localStorage.removeItem("access_token")
+    localStorage.removeItem("id_token")
+    localStorage.removeItem("refresh_token")
     setIsLoggedIn(false)
     setCartItems([])
-    // window.location.href = "/"
+    window.location.href = "/"
   }
 
   const calculateTotal = () => {
