@@ -21,16 +21,16 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="w-full lg:w-[500px] h-[300px] relative">
+        <div className="w-full !mt-8 md:!mt-0 lg:w-[500px] h-[300px] relative">
           <a
             href="https://www.google.com/maps/place/Sunder+Small+Industrial+Estate+II/@31.3168622,74.151465,15z"
             target="_blank"
             rel="noopener noreferrer"
           >
             <img
-              src="https://maps.googleapis.com/maps/api/staticmap?center=31.3168622,74.151465&zoom=15&size=500x300&markers=31.3168622,74.151465&key=YOUR_API_KEY"
+              src="/assets/location.png"
               alt="Peky Location"
-              className="w-full h-full object-cover rounded"
+              className="w-full h-full object-cover rounded scale-120"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white font-medium opacity-0 hover:opacity-100 transition">

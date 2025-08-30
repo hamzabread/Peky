@@ -96,9 +96,9 @@ const Header = (props) => {
 
           </div>
           {!isLoggedIn ? (
-            <div className='flex gap-[30px] items-center'>
+            <div className='flex  items-center'>
               <div className="relative">
-                <button onClick={() => setIsCartOpen(true)} className="relative">
+                <button onClick={() => setIsCartOpen(true)} className="relative hidden">
                   <svg
                     height="30"
                     width="30"
