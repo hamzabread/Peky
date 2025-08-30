@@ -97,7 +97,7 @@ const Header = (props) => {
           </div>
           {!isLoggedIn ? (
             <div className='flex  items-center'>
-              <div className="relative">
+              <div className="relative hidden">
                 <button onClick={() => setIsCartOpen(true)} className="relative hidden">
                   <svg
                     height="30"
