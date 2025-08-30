@@ -171,7 +171,7 @@ const Header = (props) => {
           <div className="flex items-center gap-4">
             {/* Mobile Cart Icon */}
             <div className="relative ">
-              <button onClick={() => setIsCartOpen(true)} className="relative ">
+              <button onClick={() => setIsCartOpen(true)} className="relative hidden">
                 <svg
                   height="0"
                   width="0"
