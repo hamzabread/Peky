@@ -126,9 +126,9 @@ const Header = (props) => {
               </Link>
             </div>
           ) : (
-            <div className='flex items-center gap-[30px]'>
-              <div className="relative">
-                <button onClick={() => setIsCartOpen(true)} className="relative">
+            <div className='flex items-center'>
+              <div className="relative hidden">
+                <button onClick={() => setIsCartOpen(true)} className="relative hidden">
                   <svg
                     height="30"
                     width="30"
