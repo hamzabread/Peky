@@ -496,7 +496,7 @@ async function addToCart() {
                           )}
                         </span>
                       )}
-                    <div>
+                    {/* <div>
                       <button
                         onClick={addToCart}
                         disabled={loadingCart || !token || tokenExpired}
@@ -513,7 +513,7 @@ async function addToCart() {
 
                       {errorCart && <p className="text-red-500 mt-2">{errorCart}</p>}
                       {successMsg && <p className="text-green-600 mt-2">{successMsg}</p>}
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* ✅ Quantity selector (steps of 10, min 10) */}
