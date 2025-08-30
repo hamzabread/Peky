@@ -63,17 +63,17 @@ const Banner = () => {
 
                 <div className="relative z-10 flex bg-[#E5F7F5] flex-col justify-center items-center text-center md:h-[600px] h-[400px]">
                     <Image
-                        src="/assets/main-banner/background-main.png"
+                        src="/assets/main-banner/background-maincopy.png"
                         alt="Background"
                         fill
                         priority
-                        className="object-contain md:object-cover object-center scale-100 z-0"
+                        className="object-cover md:object-cover object-center scale-100 z-0"
                     />
 
-                    <h1 className="flex items-center z-10 gap-[10px] pr-[20px] md:pr-[35px] lg:text-[65px] sm:text-[40px] text-nowrap text-[40px] font-[550] text-black">
+                    <h1 className="flex items-center z-10 gap-[5px] md:gap-[10px] pr-[10px] md:pr-[35px] lg:text-[65px] sm:text-[40px] text-nowrap text-[38px] font-[550] text-black">
                         <img
                             src="/assets/main-banner/peky_icon_only.png"
-                            className="lg:h-[60px] pl-[5px] h-[35px]"
+                            className="lg:h-[60px] pl-[5px] h-[33px]"
                             alt=""
                         />
                         Peky
@@ -81,7 +81,7 @@ const Banner = () => {
 
                     <span
                         ref={textRef}
-                        className="block text-nowrap text-[22px] sm:text-[25px] text-black lg:text-[33px]"
+                        className="block text-nowrap text-[18px] sm:text-[25px] text-black lg:text-[33px]"
                     >
                         Healthier Choice
                     </span>
