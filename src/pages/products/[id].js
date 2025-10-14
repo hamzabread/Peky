@@ -6,7 +6,7 @@ import Header from "../../components/Landing/Header/Header";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { API_URL } from "../../lib/config";
-import { authenticatedFetch } from "@/lib/auth-utils";
+import { authenticatedFetch } from "../../lib/auth-utils";
 
 export default function ProductPage() {
   const router = useRouter();

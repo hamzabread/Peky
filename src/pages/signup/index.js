@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Header from "@/components/Landing/Header/Header";
+import Header from "../../components/Landing/Header/Header";
 import { API_URL } from "../../lib/config";
 
 const index = () => {
