@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Header from "../../components/Landing/Header/Header";
+
 import { API_URL } from "../../lib/config";
+import Header from '../../components/Landing/Header/Header' 
 
 const VerifyEmail = () => {
   const router = useRouter();
