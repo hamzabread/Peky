@@ -1,4 +1,4 @@
-import "@/styles/app.css";
+import "../styles/app.css"
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import { Urbanist, DM_Sans } from "next/font/google";

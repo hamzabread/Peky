@@ -60,9 +60,9 @@ export default function Products() {
   }, [loading, products]);
 
   return (
-    <section id="Buy" className="bg-[#FBFBFB] pt-[60px] pb-[60px]">
+    <section id="Buy" className="bg-[#000] pt-[60px] pb-[60px]">
       <div className="custom-container">
-        <h2 className="text-[35px] md:text-[45px] text-center !mb-[30px] font-bold">
+        <h2 className="text-[35px] md:text-[45px] text-center text-white !mb-[30px] font-bold">
           Our <span className="pl-[5px] text-green-700">Products</span>
         </h2>
 

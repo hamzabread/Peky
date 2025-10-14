@@ -24,7 +24,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     try {
-      const t = localStorage.getItem("access_token"); // ensure key matches your auth flow
+      const t = localStorage.getItem("access_token");
       setTokenRaw(t);
     } catch (_) {
       // ignore
@@ -40,10 +40,10 @@ export default function ProductPage() {
     if (!token) return true;
     try {
       const payload = JSON.parse(atob(token.split(".")[1] || ""));
-      if (!payload?.exp) return false; // if no exp, assume not expired
+      if (!payload?.exp) return false;
       return Date.now() / 1000 >= payload.exp;
     } catch {
-      return false; // non-JWT tokens can't be decoded; let server decide
+      return false;
     }
   }, [token]);
 
@@ -54,7 +54,6 @@ export default function ProductPage() {
     return p * (qty / BASE_QTY);
   };
 
-  // Product-specific ratings and details data
   const productRatings = {
     1: { rating: 4.8, reviews: 124 },
     2: { rating: 4.6, reviews: 89 },
@@ -95,7 +94,7 @@ async function addToCart() {
   try {
     const response = await authenticatedFetch(`${API_URL}/cart/add`, {
       method: "POST",
-      body: { product_id: id, quantity }, // ✅ object, not string
+      body: { product_id: id, quantity },
     });
 
     const data = await response.json();
@@ -140,13 +139,12 @@ async function addToCart() {
     },
   };
 
-  // Error UI
   if (error) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <div className="text-center max-w-md">
           <svg
-            className="w-24 h-24 mx-auto text-red-100 !mb-4"
+            className="w-24 h-24 mx-auto text-red-500 !mb-4"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -156,13 +154,13 @@ async function addToCart() {
               clipRule="evenodd"
             />
           </svg>
-          <h1 className="text-2xl lg:text-3xl font-bold text-red-600 !mb-4">
+          <h1 className="text-2xl lg:text-3xl font-bold text-red-500 !mb-4">
             Something went wrong
           </h1>
-          <p className="text-gray-600 text-base lg:text-lg">{error}</p>
+          <p className="text-neutral-400 text-base lg:text-lg">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="!mt-6 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
+            className="!mt-6 px-6 py-3 bg-emerald-500 text-black font-semibold rounded-lg hover:bg-emerald-400 transition-colors duration-200"
           >
             Try Again
           </button>
@@ -171,13 +169,12 @@ async function addToCart() {
     );
   }
 
-  // Not found UI
   if (!product) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <div className="text-center max-w-md">
           <svg
-            className="w-24 h-24 mx-auto text-gray-200 mb-4"
+            className="w-24 h-24 mx-auto text-neutral-700 mb-4"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -189,10 +186,10 @@ async function addToCart() {
               d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
             />
           </svg>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
+          <h1 className="text-2xl lg:text-3xl font-bold text-white mb-4">
             Loading...
           </h1>
-          <p className="text-gray-600 text-base lg:text-lg">Please wait</p>
+          <p className="text-neutral-400 text-base lg:text-lg">Please wait</p>
         </div>
       </div>
     );
@@ -202,7 +199,6 @@ async function addToCart() {
   const hasMultipleImages = images.length > 1;
   const currentImage = images[currentImageIndex];
 
-  // Get rating and details data for current product
   const ratingData = productRatings[parseInt(id)] || {
     rating: 4.5,
     reviews: 100,
@@ -264,7 +260,7 @@ async function addToCart() {
           <defs>
             <linearGradient id={`half-fill-${id}`}>
               <stop offset="50%" stopColor="currentColor" />
-              <stop offset="50%" stopColor="#d1d5db" />
+              <stop offset="50%" stopColor="#525252" />
             </linearGradient>
           </defs>
           <path
@@ -280,7 +276,7 @@ async function addToCart() {
       stars.push(
         <svg
           key={`empty-${i}`}
-          className="w-5 h-5 text-gray-200"
+          className="w-5 h-5 text-neutral-700"
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -294,7 +290,7 @@ async function addToCart() {
 
   const DensityIcon = () => (
     <svg
-      className="w-6 h-6 text-blue-600"
+      className="w-6 h-6 text-cyan-400"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -309,7 +305,7 @@ async function addToCart() {
 
   const MaterialIcon = () => (
     <svg
-      className="w-6 h-6 text-gray-600"
+      className="w-6 h-6 text-neutral-400"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -321,7 +317,7 @@ async function addToCart() {
 
   const DimensionsIcon = () => (
     <svg
-      className="w-6 h-6 text-green-600"
+      className="w-6 h-6 text-emerald-400"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -335,7 +331,7 @@ async function addToCart() {
 
   const CapacityIcon = () => (
     <svg
-      className="w-6 h-6 text-purple-600"
+      className="w-6 h-6 text-violet-400"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -350,10 +346,10 @@ async function addToCart() {
   );
 
   return (
-    <div className="min-h-screen  bg-white">
-      <Header />
+    <div className="min-h-screen bg-black">
+      <Header mainnav={true} />
 
-      <p className="!mt-[150px] !ml-auto !mr-auto w-fit text-[#666]">
+      <p className="!mt-[50px] !ml-auto !mr-auto w-fit text-neutral-400">
         *All Products are customizable upon request*
       </p>
 
@@ -361,12 +357,12 @@ async function addToCart() {
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
           {/* Image Gallery */}
           <div className="space-y-4 lg:sticky lg:top-8">
-            <div className="relative aspect-square bg-gray-50 rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+            <div className="relative aspect-square bg-neutral-900 rounded-2xl overflow-hidden shadow-lg border border-neutral-800">
               {images.length > 0 && currentImage?.image_url ? (
                 <>
                   {isImageLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600"></div>
+                    <div className="absolute inset-0 flex items-center justify-center bg-neutral-900">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
                     </div>
                   )}
                   <img
@@ -379,9 +375,9 @@ async function addToCart() {
                   />
                 </>
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100">
+                <div className="w-full h-full flex flex-col items-center justify-center bg-neutral-900">
                   <svg
-                    className="w-16 h-16 text-gray-300 !mb-4"
+                    className="w-16 h-16 text-neutral-700 !mb-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -393,7 +389,7 @@ async function addToCart() {
                       d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  <span className="text-gray-400 text-lg font-medium">
+                  <span className="text-neutral-500 text-lg font-medium">
                     No image available
                   </span>
                 </div>
@@ -403,11 +399,11 @@ async function addToCart() {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-200 group"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-neutral-800/90 hover:bg-neutral-700 rounded-full p-3 shadow-lg transition-all duration-200 group border border-neutral-700"
                     aria-label="Previous image"
                   >
                     <svg
-                      className="w-5 h-5 text-gray-700 group-hover:text-black transition-colors"
+                      className="w-5 h-5 text-neutral-300 group-hover:text-white transition-colors"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -422,11 +418,11 @@ async function addToCart() {
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-200 group"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-neutral-800/90 hover:bg-neutral-700 rounded-full p-3 shadow-lg transition-all duration-200 group border border-neutral-700"
                     aria-label="Next image"
                   >
                     <svg
-                      className="w-5 h-5 text-gray-700 group-hover:text-black transition-colors"
+                      className="w-5 h-5 text-neutral-300 group-hover:text-white transition-colors"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -443,7 +439,7 @@ async function addToCart() {
               )}
 
               {hasMultipleImages && (
-                <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-sm font-medium">
+                <div className="absolute bottom-4 right-4 bg-emerald-500/90 backdrop-blur-sm text-black px-3 py-1.5 rounded-full text-sm font-semibold">
                   {currentImageIndex + 1} / {images.length}
                 </div>
               )}
@@ -458,9 +454,9 @@ async function addToCart() {
                       setCurrentImageIndex(index);
                       setIsImageLoading(true);
                     }}
-                    className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200 ${index === currentImageIndex
-                      ? "shadow-lg scale-105"
-                      : " hover:shadow-md"
+                    className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200 border-2 ${index === currentImageIndex
+                      ? "border-emerald-500 shadow-lg shadow-emerald-500/20 scale-105"
+                      : "border-neutral-800 hover:border-neutral-700 hover:shadow-md"
                       }`}
                   >
                     <img
@@ -477,59 +473,39 @@ async function addToCart() {
           {/* Product Details */}
           <div className="!mt-8 lg:!mt-0 space-y-8">
             <div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black leading-tight mb-4">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-4">
                 {product.title || product.name}
               </h1>
 
               {product.price && (
                 <div className="flex flex-col space-y-4 !mb-6">
-                  {/* ✅ Total for selected quantity */}
                   <div className="flex items-center  space-x-4">
-                    <span className="text-3xl sm:text-4xl !mb-[10px] font-bold text-black">
+                    <span className="text-3xl sm:text-4xl !mb-[10px] font-bold text-green-600">
                       {formatPrice(priceForQty(product.price, quantity))}
                     </span>
                     {product.original_price &&
                       product.original_price !== product.price && (
-                        <span className="text-xl text-gray-400 line-through">
+                        <span className="text-xl text-neutral-600 line-through">
                           {formatPrice(
                             priceForQty(product.original_price, quantity)
                           )}
                         </span>
                       )}
-                    {/* <div>
-                      <button
-                        onClick={addToCart}
-                        disabled={loadingCart || !token || tokenExpired}
-                        className="bg-black pl-[20px] !mt-[-8px] pr-[20px] pt-[10px] pb-[10px] text-white rounded-md disabled:opacity-60"
-                      >
-                        {loadingCart
-                          ? "Adding..."
-                          : !token
-                            ? "Sign in to add"
-                            : tokenExpired
-                              ? "Sign in again"
-                              : "Add to Cart"}
-                      </button>
-
-                      {errorCart && <p className="text-red-500 mt-2">{errorCart}</p>}
-                      {successMsg && <p className="text-green-600 mt-2">{successMsg}</p>}
-                    </div> */}
                   </div>
 
-                  {/* ✅ Quantity selector (steps of 10, min 10) */}
                   <div className="flex items-center space-x-4">
                     <button
                       onClick={() =>
                         setQuantity((q) => Math.max(BASE_QTY, q - BASE_QTY))
                       }
-                      className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                      className="px-3 py-1 bg-neutral-800 text-white rounded hover:bg-neutral-700 border border-neutral-700"
                     >
                       -10
                     </button>
-                    <span className="text-lg font-medium">{quantity}</span>
+                    <span className="text-lg font-medium text-white">{quantity}</span>
                     <button
                       onClick={() => setQuantity((q) => q + BASE_QTY)}
-                      className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                      className="px-3 py-1 bg-neutral-800 text-white rounded hover:bg-neutral-700 border border-neutral-700"
                     >
                       +10
                     </button>
@@ -540,11 +516,11 @@ async function addToCart() {
 
             {product.description && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-black">
+                <h2 className="text-xl font-semibold text-white">
                   Description
                 </h2>
-                <div className="prose prose-gray max-w-none">
-                  <p className="text-gray-600 leading-relaxed text-base sm:text-lg">
+                <div className="prose prose-invert max-w-none">
+                  <p className="text-neutral-400 leading-relaxed text-base sm:text-lg">
                     {product.description}
                   </p>
                 </div>
@@ -553,45 +529,45 @@ async function addToCart() {
 
             {/* Product Specifications */}
             <div className="space-y-6">
-              <h2 className="text-xl !mb-[7px] font-semibold text-black">
+              <h2 className="text-xl !mb-[7px] font-semibold text-white">
                 Product Specifications
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
                   <div className="flex items-center gap-3 !mb-3">
                     <MaterialIcon />
-                    <h3 className="font-semibold text-gray-800">Material</h3>
+                    <h3 className="font-semibold text-neutral-200">Material</h3>
                   </div>
-                  <p className="text-gray-600 text-lg">
+                  <p className="text-neutral-400 text-lg">
                     {detailsData.material}
                   </p>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
                   <div className="flex items-center gap-3 !mb-3">
                     <DensityIcon />
-                    <h3 className="font-semibold text-gray-800">Density</h3>
+                    <h3 className="font-semibold text-neutral-200">Density</h3>
                   </div>
-                  <p className="text-gray-600 text-lg">{detailsData.density}</p>
+                  <p className="text-neutral-400 text-lg">{detailsData.density}</p>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
                   <div className="flex items-center gap-3 !mb-3">
                     <DimensionsIcon />
-                    <h3 className="font-semibold text-gray-800">Size</h3>
+                    <h3 className="font-semibold text-neutral-200">Size</h3>
                   </div>
-                  <p className="text-gray-600 text-lg">
+                  <p className="text-neutral-400 text-lg">
                     {detailsData.dimensions}
                   </p>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
                   <div className="flex items-center gap-3 !mb-3">
                     <CapacityIcon />
-                    <h3 className="font-semibold text-gray-800">Capacity</h3>
+                    <h3 className="font-semibold text-neutral-200">Capacity</h3>
                   </div>
-                  <p className="text-gray-600 text-lg">
+                  <p className="text-neutral-400 text-lg">
                     {detailsData.capacity}
                   </p>
                 </div>
@@ -600,14 +576,14 @@ async function addToCart() {
 
             {/* Key Features */}
             <div className="space-y-6 ">
-              <h2 className="text-xl !mb-[10px] !mt-[10px] font-semibold text-black">
+              <h2 className="text-xl !mb-[10px] !mt-[10px] font-semibold text-white">
                 Key Features
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {product.food_safe ? (
-                  <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border border-green-100">
+                  <div className="flex items-center gap-3 p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/30">
                     <svg
-                      className="w-6 h-6 text-green-600 flex-shrink-0"
+                      className="w-6 h-6 text-emerald-400 flex-shrink-0"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -619,7 +595,7 @@ async function addToCart() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    <span className="text-green-800 font-medium">
+                    <span className="text-emerald-300 font-medium">
                       Food Safe
                     </span>
                   </div>
@@ -627,9 +603,9 @@ async function addToCart() {
                   ""
                 )}
                 {product.heat_resistant ? (
-                  <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                  <div className="flex items-center gap-3 p-4 bg-cyan-500/10 rounded-lg border border-cyan-500/30">
                     <svg
-                      className="w-6 h-6 text-blue-600 flex-shrink-0"
+                      className="w-6 h-6 text-cyan-400 flex-shrink-0"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -641,7 +617,7 @@ async function addToCart() {
                         d="M13 10V3L4 14h7v7l9-11h-7z"
                       />
                     </svg>
-                    <span className="text-blue-800 font-medium">
+                    <span className="text-cyan-300 font-medium">
                       Heat Resistant
                     </span>
                   </div>
@@ -649,9 +625,9 @@ async function addToCart() {
                   ""
                 )}
                 {product.eco_friendly ? (
-                  <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg border border-purple-100">
+                  <div className="flex items-center gap-3 p-4 bg-violet-500/10 rounded-lg border border-violet-500/30">
                     <svg
-                      className="w-6 h-6 text-purple-600 flex-shrink-0"
+                      className="w-6 h-6 text-violet-400 flex-shrink-0"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -663,7 +639,7 @@ async function addToCart() {
                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                       />
                     </svg>
-                    <span className="text-purple-800 font-medium">
+                    <span className="text-violet-300 font-medium">
                       Eco-Friendly
                     </span>
                   </div>
@@ -671,9 +647,9 @@ async function addToCart() {
                   ""
                 )}
 
-                <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-lg border border-orange-100">
+                <div className="flex items-center gap-3 p-4 bg-amber-500/10 rounded-lg border border-amber-500/30">
                   <svg
-                    className="w-6 h-6 text-orange-600 flex-shrink-0"
+                    className="w-6 h-6 text-amber-400 flex-shrink-0"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -685,7 +661,7 @@ async function addToCart() {
                       d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                     />
                   </svg>
-                  <span className="text-orange-800 font-medium">
+                  <span className="text-amber-300 font-medium">
                     Recyclable
                   </span>
                 </div>

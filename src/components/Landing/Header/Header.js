@@ -11,7 +11,7 @@ const Header = (props) => {
   const [cartLoading, setCartLoading] = useState(false)
   const [cartError, setCartError] = useState("")
 
-  const menuItems = ['Home', 'About', 'Buy', 'Articles', 'Contact']
+  const menuItems = ['Home Page', 'Buy Now', 'About']
 
   // Check if user is logged in
   useEffect(() => {
@@ -70,24 +70,32 @@ const Header = (props) => {
 
   return (
     <>
-      <header className="bg-[#000] top-0 fixed z-20 w-full left-0 p-[10px] pb-[23px] pt-[22px] md:p-[30px]">
+      <header className="bg-neutral-900 top-0  z-20 w-full left-0 p-[10px] pb-[23px] pt-[22px] md:py-[30px] md:px-[60px]">
         {/* Desktop Nav */}
         <nav className='hidden md:flex justify-between items-center'>
           <Link href='/'>
-            <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px]' />
+            <img src="/assets/header/pekyicon.jpeg" alt="main-icon" className='h-[25px] rounded-2xl' />
           </Link>
 
           <div className='flex items-center gap-[40px]'>
-            {props.mainnav && (
+        
               <ul className="flex gap-10">
-                {menuItems.map((item) => (
-                  <li key={item} className="group relative text-white cursor-pointer">
-                    <a href={`#${item}`} className="relative">{item}</a>
+           
+                  <li  className="group relative text-white cursor-pointer">
+                    <Link href='/' className="relative font-light">Home Page</Link>
                     <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
                   </li>
-                ))}
+                  <li  className="group relative text-white cursor-pointer">
+                    <Link href='/buy' className="relative font-light">Buy Now</Link>
+                    <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
+                  </li>
+                  <li  className="group relative text-white cursor-pointer">
+                    <Link href='/about' className="relative font-light">About</Link>
+                    <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
+                  </li>
+               
               </ul>
-            )}
+      
 
             {/* Cart Icon */}
 
@@ -231,13 +239,20 @@ const Header = (props) => {
               <button onClick={() => setIsOpen(false)} className="text-white">✕</button>
             </div>
             <ul className="space-y-6">
-              {menuItems.map((item) => (
-                <li key={item}>
-                  <a href={`#${item}`} className="text-white text-lg hover:text-gray-300">{item}</a>
-                </li>
-              ))}
+              <li  className="group relative text-white cursor-pointer">
+                    <Link href='/' className="relative font-light">Home Page</Link>
+                    <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
+                  </li>
+                  <li  className="group relative text-white cursor-pointer">
+                    <Link href='/buy' className="relative font-light">Buy Now</Link>
+                    <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
+                  </li>
+                  <li  className="group relative text-white cursor-pointer">
+                    <Link href='/about' className="relative font-light">About</Link>
+                    <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
+                  </li>
             </ul>
-            <div className="!mt-8 pt-6 border-t border-gray-700">
+            <div className="!mt-[400px] pt-6 border-t border-gray-700">
               {!isLoggedIn ? (
                 <Link href='/login'>
                   <button className="w-full bg-white rounded-sm px-5 py-3 text-black">Login</button>

@@ -8,6 +8,9 @@ import Benifits from './Benifits/Benifits'
 import Footer from './Footer/Footer'
 import Contact from './Contact/Contact'
 import ThemeToggle from '../ThemeToggle'
+import NewBanner from './NewBanner/NewBanner'
+import Video from './VideoBanner/Video'
+
 
 
 export default function Landing() {
@@ -15,8 +18,9 @@ export default function Landing() {
     <>
       <Header mainnav = {true} />
       <Banner />
+      <NewBanner />
       <Benifits />
-      <Products />
+      <Video />
       <Articles />
       <Contact />
       <Footer />

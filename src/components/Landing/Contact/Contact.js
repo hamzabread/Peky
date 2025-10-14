@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { API_URL } from "@/lib/config";
+import { API_URL } from "../../../lib/config";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -44,10 +44,10 @@ const Contact = () => {
   };
 
   return (
-    <section id='Contact' className='bg-[#FBFBFB] py-[50px]'>
+    <section id='Contact' className='bg-[#000] py-[50px]'>
       <div className="custom-container">
         <div className="flex flex-col justify-center items-center w-full">
-          <h2 className="text-[35px] md:text-[45px] font-bold"><span className='text-green-700 pr-[10px]'>Contact</span>Us</h2>
+          <h2 className="text-[35px] text-white md:text-[45px] font-bold"><span className='text-green-600 pr-[10px]'>Contact</span>Us</h2>
           <form onSubmit={sendData}>
             <div className="input__parent w-[300px] md:w-[400px] !mt-[20px] pl-[20px] pr-[20px]">
 
@@ -61,7 +61,7 @@ const Contact = () => {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)} 
-                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[5px] outline-none border-none"
                     placeholder=" "
                   />
                   <label htmlFor="name" className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0">
@@ -80,7 +80,7 @@ const Contact = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} 
-                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[5px] outline-none border-none"
                     placeholder=" "
                   />
                   <label htmlFor="email" className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0">
@@ -98,7 +98,7 @@ const Contact = () => {
                     id="phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    className="peer w-full px-4 pt-6 pb-2 bg-[#f3f3f3] text-black text-sm rounded-[5px] outline-none border-none"
                     placeholder=" "
                   />
                   <label htmlFor="phone" className="absolute left-4 top-1/2 -translate-y-1/2 text-[#666] text-xs transition-all duration-200 ease-in-out peer-focus:top-2 peer-focus:text-xs peer-focus:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:-translate-y-0">
@@ -115,7 +115,7 @@ const Contact = () => {
                     id="message"
                     required
                     value={message}
-                    className="peer w-full px-4 pt-6 pb-2 h-[120px] bg-[#f3f3f3] text-black text-sm rounded-[10px] outline-none border-none"
+                    className="peer w-full px-4 pt-6 pb-2 h-[120px] bg-[#f3f3f3] text-black text-sm rounded-[5px] outline-none border-none"
                     onChange={(e) => setMessage(e.target.value)} 
                     placeholder=" "
                   ></textarea>
