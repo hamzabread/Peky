@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { API_URL } from "@/lib/config";
+import { API_URL } from "../../../lib/config";
+
 
 export default function Products() {
   const [products, setProducts] = useState([]);

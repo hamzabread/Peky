@@ -1,7 +1,8 @@
 "use client";
-import Contact from "@/components/Landing/Contact/Contact";
-import Footer from "@/components/Landing/Footer/Footer";
-import Header from "@/components/Landing/Header/Header";
+import Contact from "../../components/Landing/Contact/Contact";
+import Footer from "../../components/Landing/Footer/Footer";
+import Header from "../../components/Landing/Header/Header";
+
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { API_URL } from "../../lib/config";
