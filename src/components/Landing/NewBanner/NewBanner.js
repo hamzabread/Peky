@@ -1,7 +1,65 @@
-import React from 'react';
+"use client";
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AluminiumFoilSection() {
+    const featuresRef = useRef(null);
+    const ctaRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Features animation timeline
+            const featuresTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: featuresRef.current,
+                    start: 'top 80%',
+                    end: 'top 30%',
+                    toggleActions: 'play none none reverse',
+                }
+            });
+
+            featuresTl
+                .from(featuresRef.current.children, {
+                    y: 60,
+                    opacity: 0,
+                    duration: 0.8,
+                    stagger: 0.2,
+                    ease: 'power3.out'
+                })
+                .from(featuresRef.current.querySelectorAll('svg'), {
+                    scale: 0,
+                    rotation: -180,
+                    duration: 0.6,
+                    stagger: 0.15,
+                    ease: 'back.out(1.7)'
+                }, '-=0.6');
+
+            // CTA buttons animation timeline
+            const ctaTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ctaRef.current,
+                    start: 'top 85%',
+                    end: 'top 50%',
+                    toggleActions: 'play none none reverse',
+                }
+            });
+
+            ctaTl.from(ctaRef.current.children, {
+                y: 30,
+                opacity: 0,
+                duration: 0.6,
+                stagger: 0.15,
+                ease: 'power2.out'
+            });
+        });
+
+        return () => ctx.revert();
+    }, []);
+
     return (
         <section className="bg-neutral-900 text-white py-10 lg:py-30">
             <div className="custom-container">
@@ -26,7 +84,7 @@ export default function AluminiumFoilSection() {
                     </div>
 
                     {/* Features Grid */}
-                    <div className="grid md:grid-cols-3 gap-8 items-center !mb-10">
+                    <div ref={featuresRef} className="grid md:grid-cols-3 gap-8 items-center !mb-10">
                         {/* Feature 1 */}
                         <div>
                             <div className="md:!mb-6 !mb-3">
@@ -59,7 +117,6 @@ export default function AluminiumFoilSection() {
                                     <path d="M24 36c-2-3-2-7 0-10s2-7 0-10" />
                                     <path d="M32 36c-2-3-2-7 0-10s2-7 0-10" />
                                 </svg>
-
                             </div>
                             <h3 className="md:text-2xl text-xl font-bold !mb-3 uppercase">
                                 SUPERIOR HEAT RESISTANCE FOR COOKING NEEDS
@@ -90,7 +147,7 @@ export default function AluminiumFoilSection() {
                     </div>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-wrap gap-4">
+                    <div ref={ctaRef} className="flex flex-wrap gap-4">
                         <a href='#articles' className="px-8 py-3 bg-neutral-800 hover:bg-neutral-700 rounded-full text-white font-medium transition-colors">
                             Learn More
                         </a>
@@ -100,11 +157,9 @@ export default function AluminiumFoilSection() {
                                 <path d="M6 4 L10 8 L6 12" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </Link>
-                        
                     </div>
                 </div>
             </div>
         </section>
     );
 }
-
