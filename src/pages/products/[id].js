@@ -7,13 +7,13 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { API_URL } from "../../lib/config";
 import { authenticatedFetch } from "../../lib/auth-utils";
+import { set } from "lodash";
 
 export default function ProductPage() {
   const router = useRouter();
   const { id } = router.query;
   const BASE_QTY = 10;
   const [quantity, setQuantity] = useState(BASE_QTY);
-
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -22,6 +22,25 @@ export default function ProductPage() {
   const [loadingCart, setLoadingCart] = useState(false);
   const [tokenRaw, setTokenRaw] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
+  const [price, setPrice] = useState(null);
+  const [orderId, setOrderId] = useState(null);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Check if user is already logged in by checking for access token
+    const accessToken = localStorage.getItem("access_token");
+    const userEmail = localStorage.getItem("userEmail");
+
+    if (accessToken) {
+      console.log("User already logged in with token");
+    }
+
+    if (userEmail) {
+      setEmail(userEmail);
+      console.log("User email found:", userEmail);
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -31,6 +50,18 @@ export default function ProductPage() {
       // ignore
     }
   }, []);
+
+  useEffect(() => {
+    if (product && product.price) {
+      const p =
+        typeof product.price === "string"
+          ? parseFloat(product.price)
+          : product.price;
+      const newPrice = p * (quantity / BASE_QTY);
+      setPrice(newPrice);
+      console.log("newPrice:", newPrice);
+    }
+  }, [product, quantity]);
 
   const token = useMemo(() => {
     if (!tokenRaw) return null;
@@ -47,7 +78,6 @@ export default function ProductPage() {
       return false;
     }
   }, [token]);
-
 
   const priceForQty = (price, qty) => {
     if (!price) return 0;
@@ -88,30 +118,84 @@ export default function ProductPage() {
     fetchProduct();
   }, [id]);
 
-async function addToCart() {
-  setLoadingCart(true);
-  setErrorCart(null);
+  async function addToCart() {
+    setLoadingCart(true);
+    setErrorCart(null);
 
-  try {
-    const response = await authenticatedFetch(`${API_URL}/cart/add`, {
-      method: "POST",
-      body: { product_id: id, quantity },
-    });
+    try {
+      const response = await authenticatedFetch(`${API_URL}/cart/add`, {
+        method: "POST",
+        body: { product_id: id, quantity },
+      });
 
-    const data = await response.json();
-    if (!response.ok || !data.success) {
-      setErrorCart(data.message || `Backend returned ${response.status}`);
-      return;
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        setErrorCart(data.message || `Backend returned ${response.status}`);
+        return;
+      }
+
+      console.log("✅ Item added:", data.message);
+      setSuccessMsg(data.message);
+    } catch (err) {
+      setErrorCart(err.message);
+    } finally {
+      setLoadingCart(false);
     }
-
-    console.log("✅ Item added:", data.message);
-    setSuccessMsg(data.message);
-  } catch (err) {
-    setErrorCart(err.message);
-  } finally {
-    setLoadingCart(false);
   }
-}
+
+  const handlePayNow = async () => {
+    try {
+      setLoading(true);
+
+      // ✅ Step 1: Create an order in backend
+      const orderResponse = await fetch(`${API_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenRaw}`,
+        },
+
+        body: JSON.stringify({ amount: price }),
+      });
+      const orderData = await orderResponse.json();
+      const order_id = orderData.order_id;
+      setOrderId(order_id);
+
+      // ✅ Step 2: Ask backend to create PayFast payment link
+      const paymentResponse = await fetch(`${API_URL}/payfast/initiate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: price,
+          item_name: `Order #${order_id}`,
+          m_payment_id: order_id,
+          email_address: email,
+          return_url: "https://pekypk.com/payment-success",
+          cancel_url: "https://pekypk.com/payment-cancel",
+        }),
+      });
+
+      let paymentData;
+      try {
+        paymentData = await paymentResponse.json();
+      } catch (err) {
+        const text = await paymentResponse.text();
+        console.error("Invalid JSON response:", text);
+        throw err;
+      }
+
+      if (paymentData.success && paymentData.payment_url) {
+        window.location.href = paymentData.payment_url;
+      } else {
+        alert("Error starting payment. Check backend logs.");
+      }
+    } catch (err) {
+      console.error("Payment error:", err);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const productDetails = {
     1: {
@@ -369,8 +453,9 @@ async function addToCart() {
                   <img
                     src={currentImage.image_url}
                     alt={product.title || product.name}
-                    className={`w-full h-full object-cover transition-opacity duration-300 ${isImageLoading ? "opacity-0" : "opacity-100"
-                      }`}
+                    className={`w-full h-full object-cover transition-opacity duration-300 ${
+                      isImageLoading ? "opacity-0" : "opacity-100"
+                    }`}
                     onLoad={handleImageLoad}
                     onError={() => setIsImageLoading(false)}
                   />
@@ -455,10 +540,11 @@ async function addToCart() {
                       setCurrentImageIndex(index);
                       setIsImageLoading(true);
                     }}
-                    className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200 border-2 ${index === currentImageIndex
-                      ? "border-emerald-500 shadow-lg shadow-emerald-500/20 scale-105"
-                      : "border-neutral-800 hover:border-neutral-700 hover:shadow-md"
-                      }`}
+                    className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200 border-2 ${
+                      index === currentImageIndex
+                        ? "border-emerald-500 shadow-lg shadow-emerald-500/20 scale-105"
+                        : "border-neutral-800 hover:border-neutral-700 hover:shadow-md"
+                    }`}
                   >
                     <img
                       src={image.image_url}
@@ -479,9 +565,9 @@ async function addToCart() {
               </h1>
 
               {product.price && (
-                <div className="flex flex-col space-y-4 !mb-6">
+                <div className="flex flex-row gap-5 space-y-4 !mb-4">
                   <div className="flex items-center  space-x-4">
-                    <span className="text-3xl sm:text-4xl !mb-[10px] font-bold text-green-600">
+                    <span className="text-3xl sm:text-4xl  font-bold text-green-600">
                       {formatPrice(priceForQty(product.price, quantity))}
                     </span>
                     {product.original_price &&
@@ -494,25 +580,34 @@ async function addToCart() {
                       )}
                   </div>
 
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-3">
                     <button
                       onClick={() =>
                         setQuantity((q) => Math.max(BASE_QTY, q - BASE_QTY))
                       }
-                      className="px-3 py-1 bg-neutral-800 text-white rounded hover:bg-neutral-700 border border-neutral-700"
+                      className="px-2 py-1 bg-neutral-800 text-white rounded hover:bg-neutral-700 border border-neutral-700"
                     >
                       -10
                     </button>
-                    <span className="text-lg font-medium text-white">{quantity}</span>
+                    <span className="text-lg font-medium text-white">
+                      {quantity}
+                    </span>
                     <button
                       onClick={() => setQuantity((q) => q + BASE_QTY)}
-                      className="px-3 py-1 bg-neutral-800 text-white rounded hover:bg-neutral-700 border border-neutral-700"
+                      className="px-2 py-1 bg-neutral-800 text-white rounded hover:bg-neutral-700 border border-neutral-700"
                     >
                       +10
                     </button>
                   </div>
                 </div>
               )}
+              <button
+                onClick={handlePayNow}
+                disabled={loading || !email}
+                className="px-8 py-4 !mb-3 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Processing..." : "Buy Now"}
+              </button>
             </div>
 
             {product.description && (
@@ -550,7 +645,9 @@ async function addToCart() {
                     <DensityIcon />
                     <h3 className="font-semibold text-neutral-200">Density</h3>
                   </div>
-                  <p className="text-neutral-400 text-lg">{detailsData.density}</p>
+                  <p className="text-neutral-400 text-lg">
+                    {detailsData.density}
+                  </p>
                 </div>
 
                 <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
@@ -662,9 +759,7 @@ async function addToCart() {
                       d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                     />
                   </svg>
-                  <span className="text-amber-300 font-medium">
-                    Recyclable
-                  </span>
+                  <span className="text-amber-300 font-medium">Recyclable</span>
                 </div>
               </div>
             </div>
