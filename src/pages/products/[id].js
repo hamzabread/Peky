@@ -6,7 +6,7 @@ import Header from "../../components/Landing/Header/Header";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { API_URL } from "../../lib/config";
-import { authenticatedFetch } from "../../lib/auth-utils";
+import { fetchWithToken } from "../../lib/auth-utils";
 import { set } from "lodash";
 
 export default function ProductPage() {
@@ -123,9 +123,10 @@ export default function ProductPage() {
     setErrorCart(null);
 
     try {
-      const response = await authenticatedFetch(`${API_URL}/cart/add`, {
+      const response = await fetchWithToken(`${API_URL}/cart/add`, {
         method: "POST",
-        body: { product_id: id, quantity },
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${tokenRaw}` },
+        body: JSON.stringify({ product_id: id, quantity }),
       });
 
       const data = await response.json();
@@ -142,6 +143,10 @@ export default function ProductPage() {
       setLoadingCart(false);
     }
   }
+
+  const loggedIn = useMemo(() => {
+    return token && !tokenExpired;
+  }, [token, tokenExpired]);
 
   const handlePayNow = async () => {
     try {
@@ -568,7 +573,7 @@ export default function ProductPage() {
                 <div className="flex flex-row gap-5 space-y-4 !mb-4">
                   <div className="flex items-center  space-x-4">
                     <span className="text-3xl sm:text-4xl  font-bold text-green-600">
-                      {formatPrice(priceForQty(product.price, quantity))}
+                      {formatPrice(priceForQty(product.price*10, quantity))}
                     </span>
                     {product.original_price &&
                       product.original_price !== product.price && (
@@ -601,12 +606,20 @@ export default function ProductPage() {
                   </div>
                 </div>
               )}
-              <button
+              {/* <button
                 onClick={handlePayNow}
                 disabled={loading || !email}
                 className="px-8 py-4 !mb-3 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Processing..." : "Buy Now"}
+              </button> */}
+              <button 
+              onClick={addToCart}
+              disabled={loadingCart} 
+              className="px-8 py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loadingCart ? "Adding..." : "Add to Cart"}
+                {loggedIn? "" : " (Login required)"}
               </button>
             </div>
 

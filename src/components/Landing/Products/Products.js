@@ -7,6 +7,7 @@ import { API_URL } from "../../../lib/config";
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -18,6 +19,7 @@ export default function Products() {
         ) {
           const data = await res.json();
           setProducts(data);
+          setPrice(data.price);
         } else {
           console.warn("Unexpected response from /products:", res.status);
         }
@@ -97,7 +99,7 @@ export default function Products() {
                     {product.official_name}
                   </h4>
                   <p className="text-[14px] pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px]">
-                    Rs. {product.price} / 10 Pieces
+                    Rs. {price} / 10 Pieces
                   </p>
                   <svg
                     className="absolute bottom-[30px] right-[10px] cursor-pointer"

@@ -127,7 +127,7 @@ export default function ProductsPage() {
       {/* Products Section */}
       <section id="products" className="py-16 bg-black border-b-[2px] border-neutral-900">
         <div className="custom-container flex flex-col items-center">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
             {loading ? (
                 <div className="flex justify-center items-center py-20">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#15803d]"></div>
@@ -163,7 +163,7 @@ export default function ProductsPage() {
                         </p>
                         <div className="flex items-center justify-between">
                             <p className="text-[#15803d] text-lg font-bold">
-                            Rs. {product.price} / 10 Pieces
+                            Rs. {product.price*10} / 10 Pieces
                             </p>
                             <div className="bg-[#15803d] rounded-full p-2 group-hover:scale-110 transition-transform">
                             <svg
@@ -197,7 +197,7 @@ export default function ProductsPage() {
       {/* FAQ Section */}
       <section className="py-20 bg-neutral-900">
         <div className="custom-container flex flex-col items-center">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto px-0 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-5xl font-bold text-center text-white !mb-4">
                 Frequently Asked <span className="text-[#15803d]">Questions</span>
             </h2>
