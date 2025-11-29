@@ -23,7 +23,6 @@ const Header = (props) => {
   const [provinces, setProvinces] = useState([]);
   const [guestId, setGuestId] = useState(null);
 
-
   const menuItems = ["Home Page", "Buy Now", "About"];
 
   // Check if user is logged in
@@ -45,7 +44,6 @@ const Header = (props) => {
       localStorage.setItem("guest_id", guestId);
     }
     setGuestId(guestId);
-    
   }, []);
 
   // Define isGuest based on current state
@@ -59,14 +57,13 @@ const Header = (props) => {
   }, [isLoggedIn, isCartOpen, isGuest]);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setFinalPrice(
-        cartItems
-          .reduce((total, item) => total + item.price * item.quantity, 0)
-          .toFixed(2)
-      );
-    }
-  }, [cartItems, isLoggedIn]);
+    // Calculate final price for both logged-in users and guests
+    setFinalPrice(
+      cartItems
+        .reduce((total, item) => total + item.price * item.quantity, 0)
+        .toFixed(2)
+    );
+  }, [cartItems]);
 
   const fetchCartItems = async () => {
     setCartLoading(true);
@@ -80,21 +77,29 @@ const Header = (props) => {
         localStorage.setItem("guest_id", guestId);
       }
 
-      const headers = { "Accept": "application/json" };
+      const headers = { Accept: "application/json" };
 
       if (localStorage.getItem("access_token")) {
-        headers["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
+        headers["Authorization"] = `Bearer ${localStorage.getItem(
+          "access_token"
+        )}`;
       } else {
         headers["X-Guest-ID"] = guestId;
       }
 
       // include credentials for session-backed guest carts if backend relies on cookies
-      const res = await fetch(`${API_URL}/cart`, { headers, credentials: "include" });
+      const res = await fetch(`${API_URL}/cart`, {
+        headers,
+        credentials: "include",
+      });
 
       // If backend expects a query param fallback, try that
       if (!res.ok) {
         // try fallback with user_id query param (guest id)
-        const fallbackRes = await fetch(`${API_URL}/cart?user_id=${encodeURIComponent(guestId)}`, { headers, credentials: "include" });
+        const fallbackRes = await fetch(
+          `${API_URL}/cart?user_id=${encodeURIComponent(guestId)}`,
+          { headers, credentials: "include" }
+        );
         if (!fallbackRes.ok) {
           throw new Error(await fallbackRes.text());
         }
@@ -137,13 +142,25 @@ const Header = (props) => {
     );
 
     try {
-      const token = localStorage.getItem("access_token");
+      let guestId = localStorage.getItem("guest_id");
+      if (!guestId) {
+        guestId = "guest_" + crypto.randomUUID();
+        localStorage.setItem("guest_id", guestId);
+      }
+
+      const headers = { Accept: "application/json" };
+
+      if (localStorage.getItem("access_token")) {
+        headers["Authorization"] = `Bearer ${localStorage.getItem(
+          "access_token"
+        )}`;
+      } else {
+        headers["X-Guest-ID"] = guestId;
+      }
+
       await fetch(`${API_URL}/cart/update`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers,
         body: JSON.stringify({ product_id: productId, quantity: newQuantity }),
       });
     } catch (error) {
@@ -281,7 +298,6 @@ const Header = (props) => {
       return null;
     }
   };
-
 
   // ensure Header listens for programmatic cart refresh events and reacts
   useEffect(() => {
