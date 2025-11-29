@@ -332,7 +332,7 @@ const Header = (props) => {
 
             {/* Login/Logout */}
           </div>
-          {!isLoggedIn && !isGuest ? (
+          {!isLoggedIn ? (
             <div className="flex gap-3  items-center">
               <div className="relative ">
                 <button
