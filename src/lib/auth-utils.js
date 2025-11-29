@@ -13,8 +13,7 @@ export const fetchWithToken = async (url, options = {}, retried = false) => {
     const refreshToken = localStorage.getItem("refresh_token");
     const username = localStorage.getItem("username");
 
-    if (!refreshToken || !username) {
-      window.location.href = "/login"; // redirect once
+    if (!refreshToken || !username) {    
       return;
     }
 
