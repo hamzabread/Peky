@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { API_URL } from "../../../lib/config";
 import { fetchWithToken } from "../../../lib/auth-utils";
@@ -13,29 +13,50 @@ const Header = (props) => {
   const [cartUpdated, setCartUpdated] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
   const [orderId, setOrderId] = useState(null);
-   const [loading, setLoading] = useState(false);
-   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [provinceID, setProvinceID] = useState("");
+  const [city, setCity] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [loadingProvinces, setLoadingProvinces] = useState(true);
+  const [provinces, setProvinces] = useState([]);
+  const [guestId, setGuestId] = useState(null);
 
-   
 
   const menuItems = ["Home Page", "Buy Now", "About"];
 
   // Check if user is logged in
   useEffect(() => {
+    // Check login token
     const token = localStorage.getItem("access_token");
     setIsLoggedIn(!!token);
+
+    // Save email if logged in
     const userEmail = localStorage.getItem("user_email");
     if (userEmail) {
       setEmail(userEmail);
     }
+
+    // --- GUEST ID GENERATION ---
+    let guestId = localStorage.getItem("guest_id");
+    if (!guestId) {
+      guestId = "guest_" + crypto.randomUUID();
+      localStorage.setItem("guest_id", guestId);
+    }
+    setGuestId(guestId);
+    
   }, []);
 
-  // Fetch cart items when cart opens and user is logged in
+  // Define isGuest based on current state
+  const isGuest = !isLoggedIn && guestId !== null;
+
+  // Fetch cart items when cart opens and user is logged in or is guest
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isCartOpen && (isLoggedIn || isGuest)) {
       fetchCartItems();
     }
-  }, [isLoggedIn, isCartOpen]);
+  }, [isLoggedIn, isCartOpen, isGuest]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -48,20 +69,43 @@ const Header = (props) => {
   }, [cartItems, isLoggedIn]);
 
   const fetchCartItems = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-
     setCartLoading(true);
     setCartError("");
 
     try {
-      const res = await fetchWithToken(`${API_URL}/cart`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // ensure guest id exists before calling backend
+      let guestId = localStorage.getItem("guest_id");
+      if (!guestId) {
+        guestId = "guest_" + crypto.randomUUID();
+        localStorage.setItem("guest_id", guestId);
+      }
 
+      const headers = { "Accept": "application/json" };
+
+      if (localStorage.getItem("access_token")) {
+        headers["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
+      } else {
+        headers["X-Guest-ID"] = guestId;
+      }
+
+      // include credentials for session-backed guest carts if backend relies on cookies
+      const res = await fetch(`${API_URL}/cart`, { headers, credentials: "include" });
+
+      // If backend expects a query param fallback, try that
       if (!res.ok) {
-        const errorText = await res.text(); // Read the response as text if not JSON
-        throw new Error(errorText);
+        // try fallback with user_id query param (guest id)
+        const fallbackRes = await fetch(`${API_URL}/cart?user_id=${encodeURIComponent(guestId)}`, { headers, credentials: "include" });
+        if (!fallbackRes.ok) {
+          throw new Error(await fallbackRes.text());
+        }
+        const fallbackData = await fallbackRes.json();
+        if (fallbackData.success) {
+          setCartItems(fallbackData.items || []);
+          return;
+        } else {
+          setCartError(fallbackData.message || "Failed to load cart");
+          return;
+        }
       }
 
       const data = await res.json();
@@ -182,6 +226,73 @@ const Header = (props) => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
+  const handleCheckout = async () => {
+    const address_id = await createShippingAddress();
+
+    if (!address_id) return;
+
+    handlePayNow(address_id);
+  };
+
+  useEffect(() => {
+    const loadProvinces = async () => {
+      try {
+        const res = await fetch(`${API_URL}/provinces`);
+        const data = await res.json();
+
+        if (data.success) {
+          setProvinces(data.provinces);
+        }
+      } catch (err) {
+        console.error("Error loading provinces:", err);
+      } finally {
+        setLoadingProvinces(false);
+      }
+    };
+
+    loadProvinces();
+  }, []);
+
+  const createShippingAddress = async () => {
+    const payload = {
+      province_id: Number(provinceID),
+      city,
+      street_address: streetAddress,
+      postal_code: postalCode,
+    };
+
+    try {
+      const res = await fetchWithToken(`${API_URL}/shipping-address`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || "Error saving address");
+        return null;
+      }
+
+      return data.address_id;
+    } catch (err) {
+      console.error("Address creation error:", err);
+      return null;
+    }
+  };
+
+
+  // ensure Header listens for programmatic cart refresh events and reacts
+  useEffect(() => {
+    const onCartUpdated = () => {
+      console.log("cartUpdated event received, fetching fresh cart");
+      fetchCartItems();
+    };
+    window.addEventListener("cartUpdated", onCartUpdated);
+    return () => window.removeEventListener("cartUpdated", onCartUpdated);
+  }, []);
+
   return (
     <>
       <header className="bg-neutral-900 top-0  z-20 w-full left-0 p-[10px] pb-[23px] pt-[22px] md:py-[30px] md:px-[60px]">
@@ -221,7 +332,7 @@ const Header = (props) => {
 
             {/* Login/Logout */}
           </div>
-          {!isLoggedIn ? (
+          {!isLoggedIn && !isGuest ? (
             <div className="flex gap-3  items-center">
               <div className="relative ">
                 <button
@@ -243,7 +354,7 @@ const Header = (props) => {
                     />
                   </svg>
                   {/* Cart Badge */}
-                  {isLoggedIn && cartItems.length > 0 && (
+                  {(isLoggedIn || isGuest) && cartItems.length > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {getCartItemCount()}
                     </span>
@@ -278,7 +389,7 @@ const Header = (props) => {
                     />
                   </svg>
                   {/* Cart Badge */}
-                  {isLoggedIn && cartItems.length > 0 && (
+                  {(isLoggedIn || isGuest) && cartItems.length > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {getCartItemCount()}
                     </span>
@@ -325,7 +436,7 @@ const Header = (props) => {
                   />
                 </svg>
                 {/* Mobile Cart Badge */}
-                {isLoggedIn && cartItems.length > 0 && (
+                {(isLoggedIn || isGuest) && cartItems.length > 0 && (
                   <span className="absolute  -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4  items-center justify-center text-[10px]">
                     {getCartItemCount()}
                   </span>
@@ -406,7 +517,7 @@ const Header = (props) => {
               </li>
             </ul>
             <div className="!mt-[400px] pt-6 border-t border-gray-700">
-              {!isLoggedIn ? (
+              {!isLoggedIn && !isGuest ? (
                 <Link href="/login">
                   <button className="w-full bg-white rounded-sm px-5 py-3 text-black">
                     Login
@@ -466,7 +577,7 @@ const Header = (props) => {
           {/* Cart Content */}
           <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto !p-6">
-              {!isLoggedIn ? (
+              {!isLoggedIn && !isGuest ? (
                 /* Not Logged In Message */
                 <div className="text-center !py-8">
                   <div className="bg-red-50 border border-red-200 rounded-lg !p-4 !mb-4">
@@ -571,7 +682,7 @@ const Header = (props) => {
             </div>
 
             {/* Cart Footer - Only show if logged in and has items */}
-            {isLoggedIn && cartItems.length > 0 && (
+            {(isLoggedIn || isGuest) && cartItems.length > 0 && (
               <div className="border-t border-gray-200 !p-6 bg-gray-50">
                 <div className="flex justify-between items-center !mb-4">
                   <span className="text-lg font-semibold text-gray-900">
@@ -581,7 +692,11 @@ const Header = (props) => {
                     Rs.{calculateTotal()}
                   </span>
                 </div>
-                <button onClick={handlePayNow} className="w-full !mb-20 bg-black text-white !py-3 rounded-lg font-medium hover:bg-green-600 hover:text-white transition-colors">
+                <button
+                  command="show-modal"
+                  commandfor="dialog"
+                  className="w-full !mb-20 bg-black text-white !py-3 rounded-lg font-medium hover:bg-green-600 hover:text-white transition-colors"
+                >
                   Proceed to Checkout
                 </button>
               </div>
@@ -589,6 +704,72 @@ const Header = (props) => {
           </div>
         </div>
       </div>
+
+      <el-dialog>
+        <dialog
+          id="dialog"
+          aria-labelledby="dialog-title"
+          class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent"
+        >
+          <el-dialog-backdrop class="fixed inset-0 bg-gray-900/50 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+          <div
+            tabindex="0"
+            class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0"
+          >
+            <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-gray-800 text-left shadow-xl outline -outline-offset-1 outline-white/10 transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+              <div class="p-[20px] space-y-4">
+                <select
+                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                  value={provinceID}
+                  onChange={(e) => setProvinceID(e.target.value)}
+                >
+                  <option value="">Select Province</option>
+
+                  {provinces.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+
+                <input
+                  type="text"
+                  placeholder="City"
+                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Street Address"
+                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                  value={streetAddress}
+                  onChange={(e) => setStreetAddress(e.target.value)}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Postal Code (optional)"
+                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                  value={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
+                />
+                <button
+                  type="button"
+                  command="close"
+                  commandfor="dialog"
+                  onClick={handleCheckout}
+                  class="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400  sm:w-full "
+                >
+                  Continue to Payment
+                </button>
+              </div>
+            </el-dialog-panel>
+          </div>
+        </dialog>
+      </el-dialog>
     </>
   );
 };

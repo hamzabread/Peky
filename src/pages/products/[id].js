@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { API_URL } from "../../lib/config";
 import { fetchWithToken } from "../../lib/auth-utils";
 import { set } from "lodash";
+import ProductReview from "../../components/Landing/Products/ProductReview";
 
 export default function ProductPage() {
   const router = useRouter();
@@ -26,6 +27,12 @@ export default function ProductPage() {
   const [orderId, setOrderId] = useState(null);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [guestId, setGuestId] = useState(null);
+  const [reviewData, setReviewData] = useState({
+    average_rating: 0,
+    total_reviews: 0,
+    reviews: []
+  });
 
   useEffect(() => {
     // Check if user is already logged in by checking for access token
@@ -40,7 +47,14 @@ export default function ProductPage() {
       setEmail(userEmail);
       console.log("User email found:", userEmail);
     }
+    let guestId = localStorage.getItem("guest_id");
+    if (!guestId) {
+      guestId = "guest_" + crypto.randomUUID();
+      localStorage.setItem("guest_id", guestId);
+    }
   }, []);
+
+
 
   useEffect(() => {
     try {
@@ -108,6 +122,13 @@ export default function ProductPage() {
             ...data.type_details,
             images: data.images || [],
           });
+
+          // Store review data
+          setReviewData({
+            average_rating: data.average_rating || 0,
+            total_reviews: data.total_reviews || 0,
+            reviews: data.reviews || []
+          });
         } else {
           setError(data.message || "Invalid data structure");
         }
@@ -121,28 +142,74 @@ export default function ProductPage() {
   async function addToCart() {
     setLoadingCart(true);
     setErrorCart(null);
+    console.log("addToCart called, loadingCart set to true");
 
     try {
-      const response = await fetchWithToken(`${API_URL}/cart/add`, {
+      // ensure guest id exists (so we can forward it to backend)
+      let guestId = localStorage.getItem("guest_id");
+      if (!guestId) {
+        guestId = "guest_" + crypto.randomUUID();
+        localStorage.setItem("guest_id", guestId);
+      }
+
+      const headers = { "Content-Type": "application/json" };
+
+      if (tokenRaw) {
+        headers["Authorization"] = `Bearer ${tokenRaw}`;
+      } else {
+        // pass guest identifier so backend can associate session/cart
+        headers["X-Guest-ID"] = guestId;
+      }
+
+      console.log("Sending addToCart request with headers:", Object.keys(headers));
+
+      // include credentials in case backend uses cookie-based sessions for guests
+      const response = await fetch(`${API_URL}/cart/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${tokenRaw}` },
+        headers,
+        credentials: "include",
         body: JSON.stringify({ product_id: id, quantity }),
       });
 
       const data = await response.json();
+      console.log("addToCart response:", data);
+
       if (!response.ok || !data.success) {
         setErrorCart(data.message || `Backend returned ${response.status}`);
+        setLoadingCart(false);
         return;
       }
 
       console.log("✅ Item added:", data.message);
+
+      // backend may return a user_id/cart_user_id to identify the cart; persist it
+      if (data.user_id) {
+        localStorage.setItem("cart_user_id", data.user_id);
+      } else if (data.cart_user_id) {
+        localStorage.setItem("cart_user_id", data.cart_user_id);
+      }
+
       setSuccessMsg(data.message);
+
+      // notify header (and any other listener) to refresh cart contents
+      try {
+        console.log("Dispatching cartUpdated event");
+        window.dispatchEvent(new Event("cartUpdated"));
+      } catch (e) {
+        console.error("Failed to dispatch event:", e);
+      }
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMsg(null), 3000);
     } catch (err) {
+      console.error("addToCart error:", err);
       setErrorCart(err.message);
     } finally {
       setLoadingCart(false);
+      console.log("addToCart complete, loadingCart set to false");
     }
   }
+
 
   const loggedIn = useMemo(() => {
     return token && !tokenExpired;
@@ -435,6 +502,8 @@ export default function ProductPage() {
     </svg>
   );
 
+  const isGuest = !tokenRaw && localStorage.getItem("guest_id");
+
   return (
     <div className="min-h-screen bg-black">
       <Header mainnav={true} />
@@ -446,7 +515,7 @@ export default function ProductPage() {
       <div className="max-w-7xl !mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
           {/* Image Gallery */}
-          <div className="space-y-4 lg:sticky lg:top-8">
+          <div className="space-y-4  lg:top-8">
             <div className="relative aspect-square bg-neutral-900 rounded-2xl overflow-hidden shadow-lg border border-neutral-800">
               {images.length > 0 && currentImage?.image_url ? (
                 <>
@@ -458,9 +527,8 @@ export default function ProductPage() {
                   <img
                     src={currentImage.image_url}
                     alt={product.title || product.name}
-                    className={`w-full h-full object-cover transition-opacity duration-300 ${
-                      isImageLoading ? "opacity-0" : "opacity-100"
-                    }`}
+                    className={`w-full h-full object-cover transition-opacity duration-300 ${isImageLoading ? "opacity-0" : "opacity-100"
+                      }`}
                     onLoad={handleImageLoad}
                     onError={() => setIsImageLoading(false)}
                   />
@@ -545,11 +613,10 @@ export default function ProductPage() {
                       setCurrentImageIndex(index);
                       setIsImageLoading(true);
                     }}
-                    className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200 border-2 ${
-                      index === currentImageIndex
-                        ? "border-emerald-500 shadow-lg shadow-emerald-500/20 scale-105"
-                        : "border-neutral-800 hover:border-neutral-700 hover:shadow-md"
-                    }`}
+                    className={`flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200 border-2 ${index === currentImageIndex
+                      ? "border-emerald-500 shadow-lg shadow-emerald-500/20 scale-105"
+                      : "border-neutral-800 hover:border-neutral-700 hover:shadow-md"
+                      }`}
                   >
                     <img
                       src={image.image_url}
@@ -573,7 +640,7 @@ export default function ProductPage() {
                 <div className="flex flex-row gap-5 space-y-4 !mb-4">
                   <div className="flex items-center  space-x-4">
                     <span className="text-3xl sm:text-4xl  font-bold text-green-600">
-                      {formatPrice(priceForQty(product.price*10, quantity))}
+                      {formatPrice(priceForQty(product.price * 10, quantity))}
                     </span>
                     {product.original_price &&
                       product.original_price !== product.price && (
@@ -613,23 +680,23 @@ export default function ProductPage() {
               >
                 {loading ? "Processing..." : "Buy Now"}
               </button> */}
-              <button 
-              onClick={addToCart}
-              disabled={loadingCart} 
-              className="px-8 py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              <button
+                onClick={addToCart}
+                disabled={loadingCart}
+                className="px-8 py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loadingCart ? "Adding..." : "Add to Cart"}
-                {loggedIn? "" : " (Login required)"}
+                {(loggedIn || isGuest) ? "" : ""}
               </button>
             </div>
 
             {product.description && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">
+                <h2 className="text-xl font-semibold text-white !mb-[3px] !mt-[10px]">
                   Description
                 </h2>
                 <div className="prose prose-invert max-w-none">
-                  <p className="text-neutral-400 leading-relaxed text-base sm:text-lg">
+                  <p className="text-neutral-400 leading-relaxed text-base sm:text-lg !mb-[10px]">
                     {product.description}
                   </p>
                 </div>
@@ -638,7 +705,7 @@ export default function ProductPage() {
 
             {/* Product Specifications */}
             <div className="space-y-6">
-              <h2 className="text-xl !mb-[7px] font-semibold text-white">
+              <h2 className="text-xl !mb-[10px] font-semibold text-white">
                 Product Specifications
               </h2>
 
@@ -775,9 +842,19 @@ export default function ProductPage() {
                   <span className="text-amber-300 font-medium">Recyclable</span>
                 </div>
               </div>
+
             </div>
+
           </div>
+
+
+
         </div>
+        <ProductReview
+          reviews={reviewData.reviews}
+          averageRating={reviewData.average_rating}
+          totalReviews={reviewData.total_reviews}
+        />
       </div>
 
       <Contact />

@@ -41,12 +41,10 @@ export const fetchWithToken = async (url, options = {}, retried = false) => {
         return retryRes;
       } else {
         // Refresh failed
-        window.location.href = "/login";
         return;
       }
     } catch (err) {
       console.error("Error refreshing token:", err);
-      window.location.href = "/login";
       return;
     }
   }
