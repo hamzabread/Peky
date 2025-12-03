@@ -22,6 +22,8 @@ const Header = (props) => {
   const [loadingProvinces, setLoadingProvinces] = useState(true);
   const [provinces, setProvinces] = useState([]);
   const [guestId, setGuestId] = useState(null);
+  const [phoneNo, setPhoneNo] = useState(0);
+  const [name, setName] = useState("");
 
   const menuItems = ["Home Page", "Buy Now", "About"];
 
@@ -759,10 +761,26 @@ const Header = (props) => {
 
                 <input
                   type="text"
+                  placeholder="Full Name"
+                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+
+                <input
+                  type="text"
                   placeholder="Street Address"
                   class="w-full px-3 py-2 rounded bg-gray-700 text-white"
                   value={streetAddress}
                   onChange={(e) => setStreetAddress(e.target.value)}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Enter phone number"
+                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                  value={phoneNo}
+                  onChange={(e) => setPhoneNo(e.target.value)}
                 />
 
                 <input
@@ -780,6 +798,15 @@ const Header = (props) => {
                   class="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400  sm:w-full "
                 >
                   Continue to Payment
+                </button>
+                <button
+                  type="button"
+                  command="close"
+                  commandfor="dialog"
+                  onClick={createShippingAddress}
+                  class="inline-flex w-full justify-center rounded-md bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400  sm:w-full "
+                >
+                  Cash on Delivery
                 </button>
               </div>
             </el-dialog-panel>

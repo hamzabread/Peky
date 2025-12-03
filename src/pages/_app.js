@@ -2,6 +2,7 @@ import "../styles/app.css"
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import { Urbanist, DM_Sans } from "next/font/google";
+import WhatsAppButton from "../components/Landing/WhatsAppButton/WhatsAppButton";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -48,6 +49,7 @@ export default function App({ Component, pageProps }) {
         <link rel="manifest" href="/favicon/site.webmanifest" />
       </Head>
       <ToastContainer />
+      <WhatsAppButton />
       <Component {...pageProps} />
     </div>
   );
