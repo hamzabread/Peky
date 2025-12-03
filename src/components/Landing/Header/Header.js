@@ -23,7 +23,7 @@ const Header = (props) => {
   const [provinces, setProvinces] = useState([]);
   const [guestId, setGuestId] = useState(null);
   const [phoneNo, setPhoneNo] = useState(0);
-  const [name, setName] = useState("");
+  const [fullName, setFullName] = useState("");
 
   const menuItems = ["Home Page", "Buy Now", "About"];
 
