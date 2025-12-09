@@ -271,28 +271,28 @@ export default function ProductPage() {
 
   const productDetails = {
     1: {
-      density: "Light",
-      material: "Premium Aluminum",
-      dimensions: "Small",
-      capacity: "250ml",
+      capacity: "2550 ML",
+      pieces: "200",
+      caseSize: "475*255*252 mm",
+      cbm: "0.031",
     },
     2: {
-      density: "Medium",
-      material: "Food Grade Aluminum",
-      dimensions: "Medium",
-      capacity: "500ml",
+      capacity: "700 ML",
+      pieces: "1000",
+      caseSize: "423*388*418 mm",
+      cbm: "0.075",
     },
     3: {
-      density: "Heavy",
-      material: "Industrial Aluminum",
-      dimensions: "Large",
-      capacity: "750ml",
+      capacity: "670 ML",
+      pieces: "500",
+      caseSize: "470*320*215 mm",
+      cbm: "0.032",
     },
     4: {
-      density: "Extra Heavy",
-      material: "Commercial Grade",
-      dimensions: "Family",
-      capacity: "1000ml",
+      capacity: "420 ML",
+      pieces: "1000",
+      caseSize: "455*395*255 mm",
+      cbm: "0.046",
     },
   };
 
@@ -712,41 +712,48 @@ export default function ProductPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
                   <div className="flex items-center gap-3 !mb-3">
-                    <MaterialIcon />
-                    <h3 className="font-semibold text-neutral-200">Material</h3>
+                    <CapacityIcon />
+                    <h3 className="font-semibold text-neutral-200">Capacity</h3>
                   </div>
                   <p className="text-neutral-400 text-lg">
-                    {detailsData.material}
+                    {detailsData.capacity}
                   </p>
                 </div>
 
                 <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
                   <div className="flex items-center gap-3 !mb-3">
-                    <DensityIcon />
-                    <h3 className="font-semibold text-neutral-200">Density</h3>
+                    <svg className="w-6 h-6 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="3" width="7" height="7" />
+                      <rect x="14" y="3" width="7" height="7" />
+                      <rect x="14" y="14" width="7" height="7" />
+                      <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    <h3 className="font-semibold text-neutral-200">Pieces/Case</h3>
                   </div>
                   <p className="text-neutral-400 text-lg">
-                    {detailsData.density}
+                    {detailsData.pieces}
                   </p>
                 </div>
 
                 <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
                   <div className="flex items-center gap-3 !mb-3">
                     <DimensionsIcon />
-                    <h3 className="font-semibold text-neutral-200">Size</h3>
+                    <h3 className="font-semibold text-neutral-200">Case Size</h3>
                   </div>
                   <p className="text-neutral-400 text-lg">
-                    {detailsData.dimensions}
+                    {detailsData.caseSize}
                   </p>
                 </div>
 
                 <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 hover:border-neutral-700 transition-colors">
                   <div className="flex items-center gap-3 !mb-3">
-                    <CapacityIcon />
-                    <h3 className="font-semibold text-neutral-200">Capacity</h3>
+                    <svg className="w-6 h-6 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8M1 8h22M6 4h12v4H6z" />
+                    </svg>
+                    <h3 className="font-semibold text-neutral-200">CBM</h3>
                   </div>
                   <p className="text-neutral-400 text-lg">
-                    {detailsData.capacity}
+                    {detailsData.cbm}
                   </p>
                 </div>
               </div>

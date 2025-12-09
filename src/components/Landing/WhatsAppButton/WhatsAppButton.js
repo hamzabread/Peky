@@ -1,7 +1,7 @@
 import React from "react";
 
 const WhatsAppButton = () => {
-  const whatsappNumber = "923569562783"; // Your WhatsApp number
+  const whatsappNumber = "923369982787"; // Your WhatsApp number
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hi%20Peky%2C%20I%20would%20like%20to%20inquire%20about%20your%20products`;
 
   return (

@@ -18,8 +18,8 @@ export default function Landing() {
     <>
       <Header mainnav = {true} />
       <Banner />
-      <NewBanner />
       <Benifits />
+      <NewBanner />
       <Video />
       <Articles />
       <Contact />

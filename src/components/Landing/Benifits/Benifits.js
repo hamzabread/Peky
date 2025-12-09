@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,7 +36,7 @@ const Benifits = () => {
             ease: "power3.out",
             scrollTrigger: {
               trigger: headingRef.current,
-              start: "top 85%",
+              start: "top 90%",
               toggleActions: "play none none reverse",
             },
           });
@@ -49,7 +50,7 @@ const Benifits = () => {
             ease: "power3.out",
             scrollTrigger: {
               trigger: paragraphRef.current,
-              start: "top 85%",
+              start: "top 90%",
               toggleActions: "play none none reverse",
             },
           });
@@ -171,6 +172,28 @@ const Benifits = () => {
                 Cost-effective solution for everyday cooking needs.
               </p>
             </div>
+            <div className="flex items-center gap-[10px] !mt-[10px] animate-on-scroll">
+              <Link
+              href="/buy"
+              className="px-8  py-3 w-fit mt-2 bg-green-600 hover:bg-green-800 rounded-full text-white font-medium transition-colors flex items-center gap-2"
+            >
+              Shop
+              <svg
+                className="w-4 h-4"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  d="M6 4 L10 8 L6 12"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+            </div>
+            
           </div>
         </div>
 

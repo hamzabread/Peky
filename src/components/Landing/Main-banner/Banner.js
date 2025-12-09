@@ -45,7 +45,7 @@ const Banner = () => {
 
             <section id='Home' className='bg-neutral-900 !mt-[0] md:!mt-[0]'>
 
-                <div className="relative z-10 flex bg-[#E5F7F5] flex-col justify-center items-center text-center md:h-[600px] h-[400px]">
+                <div className="relative z-10 flex bg-[#E5F7F5] flex-col justify-center items-center text-center md:h-[80vh] h-[400px]">
                     <Image
                         src="/assets/main-banner/background-maincopy.png"
                         alt="Background"

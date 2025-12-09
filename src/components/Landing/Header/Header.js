@@ -25,7 +25,7 @@ const Header = (props) => {
   const [phoneNo, setPhoneNo] = useState(null);
   const [fullName, setFullName] = useState("");
 
-  const menuItems = ["Home Page", "Buy Now", "About"];
+  const menuItems = ["Home Page", "Products", "About"];
 
   // Check if user is logged in
   useEffect(() => {
@@ -334,7 +334,7 @@ const Header = (props) => {
               </li>
               <li className="group relative text-white cursor-pointer">
                 <Link href="/buy" className="relative font-light">
-                  Buy Now
+                  Products
                 </Link>
                 <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
               </li>
@@ -523,7 +523,7 @@ const Header = (props) => {
               </li>
               <li className="group relative text-white cursor-pointer">
                 <Link href="/buy" className="relative font-light">
-                  Buy Now
+                  Products
                 </Link>
                 <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left"></span>
               </li>
