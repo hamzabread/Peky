@@ -313,6 +313,16 @@ const Header = (props) => {
 
   return (
     <>
+      <div class="w-full bg-green-600 text-white text-sm py-2">
+        <div class=" mx-auto px-4 flex flex-wrap items-center justify-center gap-6">
+          <span>
+            📍 2nd Floor, City Tower, Poonch Road, Samanabad Town, Lahore 54000,
+            Pakistan
+          </span>
+          <span>📞 +92-336-9982787</span>
+          <span>✉️ pekypkcontact@gmail.com</span>
+        </div>
+      </div>
       <header className="bg-neutral-900 top-0  z-20 w-full left-0 p-[10px] pb-[23px] pt-[22px] md:py-[30px] md:px-[60px]">
         {/* Desktop Nav */}
         <nav className="hidden md:flex justify-between items-center">
