@@ -302,14 +302,7 @@ const Header = (props) => {
   };
 
   const handleCashOnDelivery = async () => {
-    if (
-      !fullName ||
-      !phoneNo ||
-      !email ||
-
-      !city ||
-      !streetAddress
-    ) {
+    if (!fullName || !phoneNo || !email || !city || !streetAddress) {
       alert("Please fill all required fields before continuing.");
       return;
     }
@@ -323,6 +316,12 @@ const Header = (props) => {
       city,
       street_address: streetAddress,
       postal_code: postalCode || null,
+      cart_items: cartItems.map((item) => ({
+        product_id: item.product_id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      })),
     };
 
     try {
