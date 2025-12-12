@@ -24,6 +24,7 @@ const Header = (props) => {
   const [guestId, setGuestId] = useState(null);
   const [phoneNo, setPhoneNo] = useState(null);
   const [fullName, setFullName] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const menuItems = ["Home Page", "Products", "About"];
 
@@ -773,8 +774,7 @@ const Header = (props) => {
                   </span>
                 </div>
                 <button
-                  command="show-modal"
-                  commandfor="dialog"
+                  onClick={() => setIsModalOpen(true)}
                   className="w-full !mb-20 bg-black text-white !py-3 rounded-lg font-medium hover:bg-green-600 hover:text-white transition-colors"
                 >
                   Proceed to Checkout
@@ -785,104 +785,94 @@ const Header = (props) => {
         </div>
       </div>
 
-      <el-dialog>
-        <dialog
-          id="dialog"
-          aria-labelledby="dialog-title"
-          class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent"
-        >
-          <el-dialog-backdrop class="fixed inset-0 bg-gray-900/50 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="relative w-full max-w-lg rounded-lg bg-gray-800 shadow-lg">
+            {/* Close button */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-1 right-2 text-white text-2xl font-bold hover:text-gray-300"
+              aria-label="Close"
+            >
+              ×
+            </button>
 
-          <div
-            tabindex="0"
-            class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0"
-          >
-            <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-gray-800 text-left shadow-xl outline -outline-offset-1 outline-white/10 transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-              <div class="p-[20px] space-y-4">
-                <select
-                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
-                  value={provinceID}
-                  onChange={(e) => setProvinceID(e.target.value)}
-                >
-                  <option value="">Select Province</option>
+            <div className="p-6 pt-10 space-y-4">
+              <select
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                value={provinceID}
+                onChange={(e) => setProvinceID(e.target.value)}
+              >
+                <option value="">Select Province</option>
+                {provinces.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
 
-                  {provinces.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
-                </select>
+              <input
+                type="text"
+                placeholder="City"
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Street Address"
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                value={streetAddress}
+                onChange={(e) => setStreetAddress(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                value={phoneNo}
+                onChange={(e) => setPhoneNo(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Postal Code (optional)"
+                className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
+              />
 
-                <input
-                  type="text"
-                  placeholder="City"
-                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-
-                <input
-                  type="text"
-                  placeholder="Street Address"
-                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
-                  value={streetAddress}
-                  onChange={(e) => setStreetAddress(e.target.value)}
-                />
-
-                <input
-                  type="text"
-                  placeholder="Enter phone number"
-                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
-                  value={phoneNo}
-                  onChange={(e) => setPhoneNo(e.target.value)}
-                />
-
-                <input
-                  type="text"
-                  placeholder="Postal Code (optional)"
-                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
-                  value={postalCode}
-                  onChange={(e) => setPostalCode(e.target.value)}
-                />
-                <button
-                  type="button"
-                  command="close"
-                  commandfor="dialog"
-                  onClick={handleCheckout}
-                  class="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400  sm:w-full "
-                >
-                  Continue to Payment (Coming soon)
-                </button>
-                <button
-                  type="button"
-                  command="close"
-                  commandfor="dialog"
-                  onClick={handleCashOnDelivery}
-                  class="inline-flex w-full justify-center rounded-md bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400 sm:w-full"
-                >
-                  Cash on Delivery
-                </button>
-              </div>
-            </el-dialog-panel>
+              <button
+                type="button"
+                onClick={handleCheckout}
+                disabled={true}
+                className="w-full rounded-md !cursor-not-allowed bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400"
+              >
+                Continue to Payment (Coming soon)
+              </button>
+              <button
+                type="button"
+                onClick={handleCashOnDelivery}
+                className="w-full rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400"
+              >
+                Cash on Delivery
+              </button>
+            </div>
           </div>
-        </dialog>
-      </el-dialog>
+        </div>
+      )}
     </>
   );
 };
