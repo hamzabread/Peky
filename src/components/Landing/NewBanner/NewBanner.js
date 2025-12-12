@@ -63,7 +63,7 @@ export default function AluminiumFoilSection() {
     return (
         <section className="bg-neutral-900 text-white py-10 lg:py-30">
             <div className="custom-container">
-                <div className="max-w-7xl mx-auto">
+                <div className=" mx-auto">
                     {/* Header Section */}
                     <div className="grid md:grid-cols-2 md:gap-12 gap-8 !mb-10 md:!mb-20">
                         <div>
