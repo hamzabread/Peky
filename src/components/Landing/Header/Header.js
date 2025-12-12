@@ -301,6 +301,59 @@ const Header = (props) => {
     }
   };
 
+  const handleCashOnDelivery = async () => {
+    if (
+      !fullName ||
+      !phoneNo ||
+      !email ||
+
+      !city ||
+      !streetAddress
+    ) {
+      alert("Please fill all required fields before continuing.");
+      return;
+    }
+
+    const payload = {
+      full_name: fullName,
+      phone: phoneNo,
+      email: email,
+      price: Number(finalPrice),
+      province_id: Number(provinceID),
+      city,
+      street_address: streetAddress,
+      postal_code: postalCode || null,
+    };
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(`${API_URL}/cash-on-delivery`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || "Failed to submit Cash on Delivery order.");
+        return;
+      }
+
+      alert("Your Cash on Delivery order has been submitted!");
+      setIsCartOpen(false);
+      setCartItems([]);
+    } catch (err) {
+      console.error("Cash on Delivery error:", err);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // ensure Header listens for programmatic cart refresh events and reacts
   useEffect(() => {
     const onCartUpdated = () => {
@@ -778,6 +831,14 @@ const Header = (props) => {
                 />
 
                 <input
+                  type="email"
+                  placeholder="Email Address"
+                  class="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <input
                   type="text"
                   placeholder="Street Address"
                   class="w-full px-3 py-2 rounded bg-gray-700 text-white"
@@ -807,14 +868,14 @@ const Header = (props) => {
                   onClick={handleCheckout}
                   class="inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400  sm:w-full "
                 >
-                  Continue to Payment
+                  Continue to Payment (Coming soon)
                 </button>
                 <button
                   type="button"
                   command="close"
                   commandfor="dialog"
-                  onClick={createShippingAddress}
-                  class="inline-flex w-full justify-center rounded-md bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400  sm:w-full "
+                  onClick={handleCashOnDelivery}
+                  class="inline-flex w-full justify-center rounded-md bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-400 sm:w-full"
                 >
                   Cash on Delivery
                 </button>
