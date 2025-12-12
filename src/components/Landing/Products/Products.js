@@ -82,7 +82,7 @@ export default function Products() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="product-card bg-white pb-[20px] group rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
+                className="product-card bg-neutral-900 pb-[20px] group rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
               >
                 <Link href={`/products/${product.id}`}>
                   <div className="relative overflow-hidden">
@@ -92,19 +92,20 @@ export default function Products() {
                       className="w-full h-[200px] md:!h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <h3 className="text-[18px] pr-[15px] pl-[15px] sm:!text-[20px] font-bold !mt-[15px]">
+                  <h3 className="text-[18px] text-white pr-[15px] pl-[15px] sm:!text-[20px] font-bold !mt-[15px]">
                     {product.title}
                   </h3>
-                  <h4 className="text-[16px] pr-[15px] pl-[15px] sm:!text-[18px] text-[#666] !mt-[5px]">
+                  <h4 className="text-[16px] pr-[15px] pl-[15px] sm:!text-[18px] text-[#fff] !mt-[5px]">
                     {product.official_name}
                   </h4>
-                  <p className="text-[14px] pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px]">
+                  <p className="text-[14px] text-white pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px]">
                     Rs. {price} / 10 Pieces
                   </p>
                   <svg
                     className="absolute bottom-[30px] right-[10px] cursor-pointer"
                     width="30px"
                     height="30px"
+                    fill="#fff"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
                   >

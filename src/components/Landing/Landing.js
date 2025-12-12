@@ -20,6 +20,7 @@ export default function Landing() {
       <Banner />
       <Benifits />
       <NewBanner />
+      <Products />
       <Video />
       <Articles />
       <Contact />
