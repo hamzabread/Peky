@@ -271,29 +271,24 @@ export default function ProductPage() {
 
   const productDetails = {
     1: {
-      capacity: "420 ML",
-      pieces: "1000",
+      capacity: "450 ML",
+      weight: "4.5grm",
       caseSize: "455*395*255 mm",
       cbm: "0.046",
     },
     2: {
-      capacity: "670 ML",
-      pieces: "500",
+      capacity: "750 ML",
+      weight: "7.5grm",
       caseSize: "470*320*215 mm",
       cbm: "0.032",
     },
     3: {
-      capacity: "700 ML",
-      pieces: "1000",
+      capacity: "1100/1200 ML",
+      weight: "10grm",
       caseSize: "423*388*418 mm",
       cbm: "0.032",
     },
-    4: {
-      capacity: "2550 ML",
-      pieces: "200",
-      caseSize: "475*255*252 mm",
-      cbm: "0.031",
-    },
+   
     7: {
       capacity: "420 ML",
       pieces: "1000",
