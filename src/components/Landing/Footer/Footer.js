@@ -28,6 +28,7 @@ const Footer = () => {
         </div>
 
         <div className="w-full !mt-8 md:!mt-0 lg:w-[500px] h-[300px] relative">
+          
           <a
             href="https://www.google.com/maps/place/Sunder+Small+Industrial+Estate+II/@31.3168622,74.151465,15z"
             target="_blank"
