@@ -95,7 +95,7 @@ button {
 }
 
 a {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 button,
