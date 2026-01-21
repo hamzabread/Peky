@@ -109,6 +109,7 @@ export default function MeetTheDeveloperAmmar() {
     }
 
     // Projects animation
+    //cool
     if (projectsRef.current) {
       const projectCards =
         projectsRef.current.querySelectorAll(".project-card");
@@ -414,7 +415,7 @@ export default function MeetTheDeveloperAmmar() {
                       Ghulam Ishaq Khan Institute (GIKI)
                     </h3>
                     <p className="text-green-600 font-semibold !mb-2">
-                      B.Sc. in Artificial Intelligence, 2nd Year
+                      B.Sc. in Artificial Intelligence, 3rd Year
                     </p>
                     <p className="text-neutral-400">
                       Oct 2022 – Present | Topi, Pakistan
