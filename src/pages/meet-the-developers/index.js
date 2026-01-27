@@ -254,7 +254,7 @@ export default function MeetTheDeveloper() {
           <div className="absolute inset-0 bg-gradient-to-b from-green-600/10 to-transparent"></div>
 
           <div className="custom-container relative z-10">
-            <div className="max-w-7xl !mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl !mx-auto px-0 sm:px-6 lg:px-8">
               <div ref={heroRef} className="text-center space-y-6">
                 <h1 className="text-5xl md:text-6xl font-bold text-white">
                   Meet the <span className="text-green-600">Developer</span>
@@ -386,7 +386,7 @@ export default function MeetTheDeveloper() {
         {/* Education Section */}
         <section ref={educationRef} className="py-16 bg-neutral-900/50">
           <div className="custom-container">
-            <div className="max-w-7xl !mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl !mx-auto px-0 sm:px-6 lg:px-8">
               <h2 className="text-3xl md:text-4xl font-bold text-white !mb-8">
                 <span className="text-green-600">Education</span>
               </h2>
@@ -416,7 +416,7 @@ export default function MeetTheDeveloper() {
         {/* Experience Section */}
         <section ref={experienceRef} className="py-16">
           <div className="custom-container">
-            <div className="max-w-7xl !mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl !mx-auto px-0 sm:px-6 lg:px-8">
               <h2 className="text-3xl md:text-4xl font-bold text-white !mb-8">
                 <span className="text-green-600">Experience</span>
               </h2>
@@ -470,7 +470,7 @@ export default function MeetTheDeveloper() {
         {/* Skills Section */}
         <section ref={skillsRef} className="py-16 bg-neutral-900/50">
           <div className="custom-container">
-            <div className="max-w-7xl !mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl !mx-auto px-0 sm:px-6 lg:px-8">
               <h2 className="text-3xl md:text-4xl font-bold text-white !mb-12 text-center">
                 Technical <span className="text-green-600">Skills</span>
               </h2>
@@ -503,7 +503,7 @@ export default function MeetTheDeveloper() {
         {/* Projects Section */}
         <section ref={projectsRef} className="py-16">
           <div className="custom-container">
-            <div className="max-w-7xl !mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl !mx-auto px-0 sm:px-6 lg:px-8">
               <h2 className="text-3xl md:text-4xl font-bold text-white !mb-12 text-center">
                 Key <span className="text-green-600">Projects</span>
               </h2>
@@ -577,7 +577,7 @@ export default function MeetTheDeveloper() {
           <div className="custom-container">
             <div
               ref={ctaRef}
-              className="max-w-4xl !mx-auto px-4 sm:px-6 lg:px-8 text-center"
+              className="max-w-4xl !mx-auto px-0 sm:px-6 lg:px-8 text-center"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-white !mb-6">
                 Let's Build Something{" "}

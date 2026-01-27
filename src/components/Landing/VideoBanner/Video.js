@@ -102,7 +102,7 @@ const Video = () => {
   return (
     <div
       ref={containerRef}
-      className="relative flex flex-col items-center justify-center h-[440px] sm:h-[500px] lg:h-[600px] mx-auto rounded-3xl bg-neutral-900 overflow-hidden shadow-2xl border border-neutral-800"
+      className="relative flex flex-col items-center justify-center h-[500px] sm:h-[550px] lg:h-[600px] mx-auto rounded-3xl bg-neutral-900 overflow-hidden shadow-2xl border border-neutral-800"
     >
       {/* Background Video */}
       <div className="absolute inset-0 overflow-hidden z-0">
@@ -235,7 +235,7 @@ const Video = () => {
         <Link href="/buy" className="no-underline">
           <button
             ref={ctaRef}
-            className="!mt-6 px-8 py-4 bg-green-600 hover:bg-green-400 text-white font-semibold text-lg rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105"
+            className="!mt-3 px-8 py-3 bg-green-600 hover:bg-green-400 text-white font-semibold text-lg rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105"
           >
             Request Custom Colors
           </button>
