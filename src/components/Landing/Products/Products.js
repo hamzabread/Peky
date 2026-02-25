@@ -3,11 +3,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../../lib/config";
 
-
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -18,8 +16,19 @@ export default function Products() {
           res.headers.get("content-type")?.includes("application/json")
         ) {
           const data = await res.json();
-          setProducts(data);
-          setPrice(data.price);
+          
+          // Sort products: F1, F2, F3 first, then others
+          const sortedProducts = data.sort((a, b) => {
+            const codeA = (a.code || '').toString().toUpperCase().trim();
+            const codeB = (b.code || '').toString().toUpperCase().trim();
+            
+            const orderMap = { 'F1': 1, 'F2': 2, 'F3': 3 };
+            const orderA = orderMap[codeA] || 999;
+            const orderB = orderMap[codeB] || 999;
+            return orderA - orderB;
+          });
+          
+          setProducts(sortedProducts);
         } else {
           console.warn("Unexpected response from /products:", res.status);
         }
@@ -59,8 +68,13 @@ export default function Products() {
         ScrollTrigger.refresh();
       })();
     }
-    
   }, [loading, products]);
+
+  // Check if product is available (F1, F2, F3) - case insensitive
+  const isAvailable = (product) => {
+    const code = (product.code || '').toString().toUpperCase().trim();
+    return ['F1', 'F2', 'F3'].includes(code);
+  };
 
   return (
     <section id="Buy" className="bg-[#000] pt-[60px] pb-[60px]">
@@ -79,41 +93,76 @@ export default function Products() {
           </p>
         ) : (
           <div className="products-grid grid grid-cols-1 md:grid-cols-2 justify-center gap-[10px] md:gap-[60px] !pt-[30px]">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="product-card bg-neutral-900 pb-[20px] group rounded-[10px] border-[1px] border-gray-600 overflow-hidden relative cursor-pointer"
-              >
-                <Link href={`/products/${product.id}`}>
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="w-full h-[200px] md:!h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                  <h3 className="text-[18px] text-white pr-[15px] pl-[15px] sm:!text-[20px] font-bold !mt-[15px]">
-                    {product.title}
-                  </h3>
-                  <h4 className="text-[16px] pr-[15px] pl-[15px] sm:!text-[18px] text-[#fff] !mt-[5px]">
-                    {product.official_name}
-                  </h4>
-                  <p className="text-[14px] text-white pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px]">
-                    Rs. {price} / 10 Pieces
-                  </p>
-                  <svg
-                    className="absolute bottom-[30px] right-[10px] cursor-pointer"
-                    width="30px"
-                    height="30px"
-                    fill="#fff"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 640 640"
-                  >
-                    <path d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM296 408L296 344L232 344C218.7 344 208 333.3 208 320C208 306.7 218.7 296 232 296L296 296L296 232C296 218.7 306.7 208 320 208C333.3 208 344 218.7 344 232L344 296L408 296C421.3 296 432 306.7 432 320C432 333.3 421.3 344 408 344L344 344L344 408C344 421.3 333.3 432 320 432C306.7 432 296 421.3 296 408z" />
-                  </svg>
-                </Link>
-              </div>
-            ))}
+            {products.map((product) => {
+              const available = isAvailable(product);
+              
+              return (
+                <div
+                  key={product.id}
+                  className={`product-card bg-neutral-900 pb-[20px] group rounded-[10px] border-[1px] ${
+                    available ? 'border-gray-600' : 'border-red-600'
+                  } overflow-hidden relative ${available ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                >
+                  {available ? (
+                    <Link href={`/products/${product.id}`}>
+                      <div className="relative overflow-hidden">
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className="w-full h-[200px] md:!h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                      <h3 className="text-[18px] text-white pr-[15px] pl-[15px] sm:!text-[20px] font-bold !mt-[15px]">
+                        {product.title}
+                      </h3>
+                      <h4 className="text-[16px] pr-[15px] pl-[15px] sm:!text-[18px] text-[#fff] !mt-[5px]">
+                        {product.official_name}
+                      </h4>
+                      <p className="text-[14px] text-white pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px]">
+                        Rs. {product.price}0 / 10 Pieces
+                      </p>
+                      <svg
+                        className="absolute bottom-[30px] right-[10px] cursor-pointer"
+                        width="30px"
+                        height="30px"
+                        fill="#fff"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 640 640"
+                      >
+                        <path d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM296 408L296 344L232 344C218.7 344 208 333.3 208 320C208 306.7 218.7 296 232 296L296 296L296 232C296 218.7 306.7 208 320 208C333.3 208 344 218.7 344 232L344 296L408 296C421.3 296 432 306.7 432 320C432 333.3 421.3 344 408 344L344 344L344 408C344 421.3 333.3 432 320 432C306.7 432 296 421.3 296 408z" />
+                      </svg>
+                    </Link>
+                  ) : (
+                    <>
+                      <div className="relative overflow-hidden">
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className="w-full h-[200px] md:!h-[300px] object-cover opacity-60"
+                        />
+                        {/* Coming Soon Badge */}
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                          <div className="bg-red-600 px-8 py-4 rounded-lg shadow-lg shadow-red-600/50 border-2 border-white">
+                            <p className="text-white text-xl md:text-2xl font-bold uppercase tracking-wider">
+                              Coming Soon
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="text-[18px] text-white pr-[15px] pl-[15px] sm:!text-[20px] font-bold !mt-[15px] opacity-60">
+                        {product.title}
+                      </h3>
+                      <h4 className="text-[16px] pr-[15px] pl-[15px] sm:!text-[18px] text-[#fff] !mt-[5px] opacity-60">
+                        {product.official_name}
+                      </h4>
+                      <p className="text-[14px] text-white pr-[15px] pl-[15px] sm:!text-[16px] font-semibold !mt-[5px] opacity-60">
+                        Price TBA
+                      </p>
+                    </>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

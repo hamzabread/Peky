@@ -26,7 +26,19 @@ export default function ProductsPage() {
           res.headers.get("content-type")?.includes("application/json")
         ) {
           const data = await res.json();
-          setProducts(data);
+          
+          // Sort products: F1, F2, F3 first, then others
+          const sortedProducts = data.sort((a, b) => {
+            const codeA = (a.code || '').toString().toUpperCase().trim();
+            const codeB = (b.code || '').toString().toUpperCase().trim();
+            
+            const orderMap = { 'F1': 1, 'F2': 2, 'F3': 3 };
+            const orderA = orderMap[codeA] || 999;
+            const orderB = orderMap[codeB] || 999;
+            return orderA - orderB;
+          });
+          
+          setProducts(sortedProducts);
         } else {
           // Mock data for demo
           setProducts([
@@ -72,6 +84,12 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
+  // Check if product is available (F1, F2, F3) - case insensitive
+  const isAvailable = (product) => {
+    const code = (product.code || '').toString().toUpperCase().trim();
+    return ['F1', 'F2', 'F3'].includes(code);
+  };
+
   const faqs = [
     {
       question: "What materials are your products made from?",
@@ -110,7 +128,6 @@ export default function ProductsPage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-neutral-900 to-black pt-24 pb-16">
         <div className="custom-container flex items-center flex-col text-center">
-
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
                 <h1 className="text-4xl md:text-6xl font-bold text-white !mb-6">
@@ -140,12 +157,18 @@ export default function ProductsPage() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {products.map((product) => (
+                {products.map((product) => {
+                  const available = isAvailable(product);
+                  
+                  return (
                     <div
                     key={product.id}
-                    className="bg-[#000] rounded-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 border border-gray-700 hover:border-[#15803d]"
+                    className={`bg-[#000] rounded-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 border ${
+                      available ? 'border-gray-700 hover:border-[#15803d]' : 'border-red-600'
+                    } ${available ? '' : 'cursor-not-allowed'}`}
                     >
-                    <Link href={`/products/${product.id}`}>
+                    {available ? (
+                      <Link href={`/products/${product.id}`}>
                         <div className="relative overflow-hidden">
                         <img
                             src={product.image}
@@ -177,22 +200,50 @@ export default function ProductsPage() {
                             </div>
                         </div>
                         </div>
-                    </Link>
+                      </Link>
+                    ) : (
+                      <>
+                        <div className="relative overflow-hidden">
+                          <img
+                            src={product.image}
+                            alt={product.title}
+                            className="w-full h-64 object-cover opacity-60"
+                          />
+                          {/* Coming Soon Badge */}
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                            <div className="bg-red-600 px-8 py-4 rounded-lg shadow-lg shadow-red-600/50 border-2 border-white">
+                              <p className="text-white text-xl md:text-2xl font-bold uppercase tracking-wider">
+                                Coming Soon
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="p-6 opacity-60">
+                          <h3 className="text-xl font-bold text-white !mb-2">
+                            {product.title}
+                          </h3>
+                          <p className="text-gray-400 text-sm !mb-4">
+                            {product.official_name}
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <p className="text-gray-400 text-lg font-bold">
+                              Price TBA
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    )}
                     </div>
-                ))}
+                  );
+                })}
                 </div>
-                
-                
-                
             )}
-           
             </div>
         </div>
       </section>
 
       {/* Why Choose Section */}
       <Choose />
-
 
       {/* FAQ Section */}
       <section className="py-20 bg-neutral-900">
