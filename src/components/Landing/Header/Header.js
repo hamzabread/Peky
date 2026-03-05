@@ -778,8 +778,9 @@ const Header = (props) => {
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="w-full !mb-20 bg-black text-white !py-3 rounded-lg font-medium hover:bg-green-600 hover:text-white transition-colors"
+                  disabled
                 >
-                  Proceed to Checkout
+                  Available Soon - Checkout
                 </button>
               </div>
             )}
